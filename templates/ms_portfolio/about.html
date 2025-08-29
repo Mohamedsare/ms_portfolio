@@ -1,0 +1,82 @@
+{% extends 'ms_portfolio/base.html' %}
+{% load static %}
+{% block content %}
+<!-- Section À propos -->
+<section class="about">
+    <div class="container">
+        <h2 class="section-title">À <span>propos</span></h2>
+        <div class="about-container">
+            <div class="about-img">
+                <div class="img-card">
+                    <div class="img-card-inner">
+                        <div class="img-card-front">
+                            <img src="/media/img/mhd.jpeg" alt="Mohamed SARE">
+                        </div>
+                        <div class="img-card-back">
+                            <h3>Mohamed SARE</h3>
+                            <p>DéV fullstack junior</p>
+                            <p>Django/React</p>
+                            <p>Créatif & Innovant</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="about-text">
+                <h3>Qui suis-je ?</h3>
+                <p>
+                    Je suis Mohamed SARE, étudiant en DUT Génie Informatique originaire
+                     du Burkina Faso. Passionné par l’informatique et la programmation sous 
+                     toutes ses formes, je m’intéresse autant au développement logiciel qu’aux
+                      réseaux et à la conception de solutions numériques complètes.
+                </p>
+                <p>
+                    Curieux et rigoureux, j’aime relever des défis techniques et explorer
+                     de nouvelles technologies pour créer des projets innovants et fonctionnels. 
+                     Mon objectif est de mettre mes compétences au service de solutions qui allient 
+                     performance, efficacité et expérience utilisateur, tout en restant adaptable à différents
+                      profils de projets et équipes.
+                </p>
+        
+                
+                <div class="soft-skills">
+                    <h3>Compétences transversales</h3>
+                    <div class="skills-container">
+                        <span class="skill" data-skill="Créativité">Créativité</span>
+                        <span class="skill" data-skill="Travail d'équipe">Travail d'équipe</span>
+                        <span class="skill" data-skill="Communication">Communication</span>
+                        <span class="skill" data-skill="Résolution de problèmes">Résolution de problèmes</span>
+                        <span class="skill" data-skill="Adaptabilité">Adaptabilité</span>
+                        <span class="skill" data-skill="Gestion de projet">Gestion de projet</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Timeline -->
+        <div class="timeline">
+            <h3>Mon <span>Parcours</span></h3>
+            <div class="timeline-container">
+                <div class="timeline-item">
+                    <div class="timeline-content">
+                        <h4><script> document.write(new Date().getFullYear());</script> - Présent</h4>
+                        <p>Etudiant en 2ème année de DUT Génie Informatique à l'Ecole Supérieure de Technologie de Casablanca</p>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-content">
+                        <h4>2023 - 2024</h4>
+                        <p>Baccalauréat Scientifique au Lycée Privée Marie Véronique de Ouagadougou( Burkina Faso)</p>
+                    </div>
+                </div>
+            
+                <div class="timeline-item">
+                    <div class="timeline-content">
+                        <h4>2021 - 2022</h4>
+                        <p>Premiers pas en Algorithme et Programmation C(découverte de la programmation)</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

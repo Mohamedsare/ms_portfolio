@@ -1,0 +1,77 @@
+{% extends 'ms_portfolio/base.html' %}
+
+{% block content %}
+<!-- Section Hero -->
+<section class="hero">
+    <canvas id="particles-js"></canvas>
+    <div class="hero-container">
+        <h1 class="hero-heading">
+            Bienvenue, je suis <span class="typed-text"></span><span class="cursor-blink">|</span>
+        </h1>
+        <p class="hero-description">
+            Développeur web junior passionné et créatif, spécialisé dans la création d'expériences numériques innovantes et performantes. 
+            Je transforme vos idées en réalité digitale avec élégance et efficacité.
+        </p>
+        <a href="{% url 'projects' %}" class="main-btn">Voir mes projets</a>
+    </div>
+    <div class="scroll-down">
+        <span></span>
+        <span></span>
+        <span></span>
+    </div>
+</section>
+
+<!-- Section Citation -->
+<section class="quote">
+    <div class="quote-container">
+        <div class="quote-slide active">
+            <p>"La créativité est l'intelligence qui s'amuse."</p>
+            <span>- Albert Einstein</span>
+        </div>
+        <div class="quote-slide">
+            <p>"Le code est de la poésie qui fait fonctionner le monde."</p>
+            <span>- Anonyme</span>
+        </div>
+        <div class="quote-slide">
+            <p>"L'innovation distingue un leader d'un suiveur."</p>
+            <span>- Steve Jobs</span>
+        </div>
+        <div class="quote-dots">
+            <span class="dot active"></span>
+            <span class="dot"></span>
+            <span class="dot"></span>
+        </div>
+    </div>
+</section>
+
+<!-- Section Blog -->
+<section class="blog">
+    <div class="container">
+        <h2 class="section-title">Derniers <span>Articles</span></h2>
+        <div class="blog-container">
+            {% if latest_articles %}
+                {% for article in latest_articles %}
+                <article class="blog-card">
+                    {% if article.image %}
+                        <img src="{{ article.image.url }}" alt="{{ article.title }}" class="blog-img">
+                    {% else %}
+                        <img src="https://via.placeholder.com/400x220/6c63ff/ffffff?text={{ article.title|slice:':20' }}" alt="{{ article.title }}" class="blog-img">
+                    {% endif %}
+                    <div class="blog-content">
+                        <h3 class="blog-title">{{ article.title }}</h3>
+                        <p class="blog-date">{{ article.published_date|date:"d F Y" }}</p>
+                        <p class="blog-summary">{{ article.summary }}</p>
+                        <a href="{% url 'article_detail' article.slug %}" class="blog-btn">Lire plus</a>
+                    </div>
+                </article>
+                {% endfor %}
+            {% else %}
+                <div class="no-articles">
+                    <p>Aucun article disponible pour le moment.</p>
+                    <p>Revenez bientôt pour découvrir de nouveaux contenus !</p>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</section>
+{% endblock %}

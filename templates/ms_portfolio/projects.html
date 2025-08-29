@@ -1,0 +1,71 @@
+{% extends 'ms_portfolio/base.html' %}
+
+{% block content %}
+<!-- Section Projets -->
+<section class="projects">
+    <div class="container">
+        <h2 class="section-title">Mes <span>Projets</span></h2>
+        
+        <!-- Filtres -->
+        <div class="projects-filter">
+            <button class="filter-btn active" data-filter="all">Tous</button>
+            {% for category_code, category_name in categories %}
+            <button class="filter-btn" data-filter="{{ category_code }}">{{ category_name }}</button>
+            {% endfor %}
+        </div>
+        
+        <!-- Grille des projets -->
+        <div class="projects-container">
+            {% if projects %}
+                {% for project in projects %}
+                <div class="project-card {{ project.category }}" data-category="{{ project.category }}">
+                    {% if project.image %}
+                        <img src="{{ project.image.url }}" alt="{{ project.title }}" class="project-img">
+                    {% else %}
+                        <img src="https://via.placeholder.com/400x300/6c63ff/ffffff?text={{ project.title|slice:':20' }}" alt="{{ project.title }}" class="project-img">
+                    {% endif %}
+                    
+                    <div class="project-overlay">
+                        <div class="project-status {{ project.status }}">
+                            <span class="status-badge">{{ project.get_status_display }}</span>
+                        </div>
+                        
+                        <h3 class="project-title">{{ project.title }}</h3>
+                        <p class="project-category">{{ project.get_category_display }}</p>
+                        <p class="project-summary">{{ project.summary|truncatewords:15 }}</p>
+                        
+                        <div class="project-technologies">
+                            {% for tech in project.get_technologies_list|slice:":3" %}
+                            <span class="tech-tag">{{ tech }}</span>
+                            {% endfor %}
+                            {% if project.get_technologies_list|length > 3 %}
+                            <span class="tech-tag more">+{{ project.get_technologies_list|length|add:"-3" }}</span>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="project-links">
+                            <a href="{% url 'project_detail' project.slug %}" class="project-link">Voir plus</a>
+                            {% if project.github_url %}
+                            <a href="{{ project.github_url }}" target="_blank" class="project-link github">
+                                <i class="fab fa-github"></i> Code
+                            </a>
+                            {% endif %}
+                            {% if project.live_url %}
+                            <a href="{{ project.live_url }}" target="_blank" class="project-link live">
+                                <i class="fas fa-external-link-alt"></i> Demo
+                            </a>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            {% else %}
+                <div class="no-projects">
+                    <p>Aucun projet disponible pour le moment.</p>
+                    <p>Revenez bientôt pour découvrir mes réalisations !</p>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</section>
+{% endblock %}

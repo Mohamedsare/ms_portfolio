@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}{{ page_title|default:"Portfolio Mohamed SARE" }}{% endblock %}</title>
+    
+    <!-- CSS -->
+    <link rel="stylesheet" href="/static/css/styles.css">
+    <link rel="stylesheet" href="/static/css/additional-styles.css">
+    
+    <!-- Font Awesome pour les icônes -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Loader -->
+    <div class="loader">
+        <div class="loader-text">
+            <span class="letter">M</span>
+            <span class="letter">O</span>
+            <span class="letter">H</span>
+            <span class="letter">A</span>
+            <span class="letter">M</span>
+            <span class="letter">E</span>
+            <span class="letter">D</span>
+            <span class="letter"> </span>
+            <span class="letter"> </span>
+            <span class="letter">S</span>
+            <span class="letter">A</span>
+            <span class="letter">R</span>
+            <span class="letter">E</span>
+        </div>
+    </div>
+
+    <!-- Curseur personnalisé -->
+    <div class="cursor"></div>
+    <div class="cursor-follower"></div>
+
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="navbar-container">
+            <a href="{% url 'home' %}" class="navbar-logo">MS</a>
+            
+            <!-- Bouton mode sombre/clair - Position mobile (entre MS et menu) -->
+            <div class="theme-switch-wrapper mobile-position">
+                <label class="theme-switch-label">🌙</label>
+                <label class="theme-switch">
+                    <input type="checkbox">
+                    <span class="slider"></span>
+                </label>
+                <label class="theme-switch-label">☀️</label>
+            </div>
+            
+            <ul class="navbar-menu">
+                <!-- Bouton mode sombre/clair - Position desktop (entre MS et Accueil) -->
+                <li class="navbar-item theme-switch-item desktop-position">
+                    <div class="theme-switch-wrapper">
+                        <label class="theme-switch-label">🌙</label>
+                        <label class="theme-switch">
+                            <input type="checkbox">
+                            <span class="slider"></span>
+                        </label>
+                        <label class="theme-switch-label">☀️</label>
+                    </div>
+                </li>
+                
+                <li class="navbar-item">
+                    <a href="{% url 'home' %}" class="navbar-links {% if active_page == 'home' %}active{% endif %}">Accueil</a>
+                </li>
+                <li class="navbar-item">
+                    <a href="{% url 'about' %}" class="navbar-links {% if active_page == 'about' %}active{% endif %}">À propos</a>
+                </li>
+                <li class="navbar-item">
+                    <a href="{% url 'projects' %}" class="navbar-links {% if active_page == 'projects' %}active{% endif %}">Projets</a>
+                </li>
+                <li class="navbar-item">
+                    <a href="{% url 'skills' %}" class="navbar-links {% if active_page == 'skills' %}active{% endif %}">Compétences</a>
+                </li>
+                <li class="navbar-item">
+                    <a href="{% url 'contact' %}" class="navbar-links {% if active_page == 'contact' %}active{% endif %}">Contact</a>
+                </li>
+            </ul>
+            
+            <div class="navbar-toggle">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Contenu principal -->
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-logo">
+                <a href="{% url 'home' %}">Mohamed SARE</a>
+                <p>Je suis Full-Stack, Networker, Designer junior. Étudiant en DUT Génie Informatique, je combine compétences en développement, administration réseau et design numérique pour créer des solutions performantes et adaptables. Passionné par l’innovation et la technologie, je m’adapte facilement à différents profils de projets et je cherche toujours à apporter valeur et efficacité dans chaque challenge.</p>
+            </div>
+            <div class="footer-links">
+                <h3>Liens rapides</h3>
+                <ul>
+                    <li><a href="{% url 'home' %}">Accueil</a></li>
+                    <li><a href="{% url 'about' %}">À propos</a></li>
+                    <li><a href="{% url 'projects' %}">Projets</a></li>
+                    <li><a href="{% url 'skills' %}">Compétences</a></li>
+                    <li><a href="{% url 'contact' %}">Contact</a></li>
+                </ul>
+            </div>
+            <div class="footer-social">
+                <h3>Suivez-moi sur:</h3>
+                <div class="social-icons">
+                    <a href="#" title="LinkedIn"><i class="fab fa-linkedin"></i></a>
+                    <a href="#" title="GitHub"><i class="fab fa-github"></i></a>
+                    <a href="#" title="Twitter"><i class="fab fa-twitter"></i></a>
+                    <a href="#" title="Instagram"><i class="fab fa-instagram"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; <script> document.write(new Date().getFullYear());</script> Mohamed SARE. Tous droits réservés.</p>
+            <button class="scroll-top" title="Remonter en haut">
+                <i class="fas fa-arrow-up"></i>
+            </button>
+        </div>
+    </footer>
+
+
+
+    <!-- JavaScript -->
+    <script src="/static/js/main.js"></script>
+</body>
+</html>

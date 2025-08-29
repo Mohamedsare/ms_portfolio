@@ -1,0 +1,150 @@
+{% extends 'ms_portfolio/base.html' %}
+{% load article_filters %}
+
+{% block content %}
+<!-- Projet détaillé -->
+<section class="project-detail">
+    <div class="container">
+        <article class="project-content">
+            <!-- En-tête du projet -->
+            <header class="project-header">
+                <div class="project-meta">
+                    <span class="project-category">
+                        <i class="fas fa-tag"></i>
+                        {{ project.get_category_display }}
+                    </span>
+                    <span class="project-status {{ project.status }}">
+                        <i class="fas fa-circle"></i>
+                        {{ project.get_status_display }}
+                    </span>
+                    <span class="project-duration">
+                        <i class="fas fa-clock"></i>
+                        {{ project.get_duration }}
+                    </span>
+                    <span class="project-views">
+                        <i class="fas fa-eye"></i>
+                        {{ project.views_count }} vue{{ project.views_count|pluralize }}
+                    </span>
+                </div>
+                
+                <h1 class="project-title">{{ project.title }}</h1>
+                
+                {% if project.image %}
+                <div class="project-image">
+                    <img src="{{ project.image.url }}" alt="{{ project.title }}">
+                </div>
+                {% endif %}
+            </header>
+            
+            <!-- Résumé du projet -->
+            <div class="project-summary">
+                <p>{{ project.summary }}</p>
+            </div>
+            
+            <!-- Technologies utilisées -->
+            <div class="project-technologies-section">
+                <h3>Technologies utilisées</h3>
+                <div class="technologies-grid">
+                    {% for tech in project.get_technologies_list %}
+                    <span class="tech-badge">{{ tech }}</span>
+                    {% endfor %}
+                </div>
+            </div>
+            
+            <!-- Description complète -->
+            <div class="project-description">
+                <h3>Description du projet</h3>
+                {{ project.description|format_article_advanced }}
+            </div>
+            
+            <!-- Liens du projet -->
+            <div class="project-links-section">
+                <h3>Liens du projet</h3>
+                <div class="project-links-grid">
+                    {% if project.github_url %}
+                    <a href="{{ project.github_url }}" target="_blank" class="project-link-card github">
+                        <i class="fab fa-github"></i>
+                        <span>Voir le code source</span>
+                    </a>
+                    {% endif %}
+                    
+                    {% if project.live_url %}
+                    <a href="{{ project.live_url }}" target="_blank" class="project-link-card live">
+                        <i class="fas fa-external-link-alt"></i>
+                        <span>Voir en ligne</span>
+                    </a>
+                    {% endif %}
+                    
+                    {% if project.demo_url %}
+                    <a href="{{ project.demo_url }}" target="_blank" class="project-link-card demo">
+                        <i class="fas fa-play"></i>
+                        <span>Voir la démo</span>
+                    </a>
+                    {% endif %}
+                </div>
+            </div>
+            
+            <!-- Informations du projet -->
+            <div class="project-info">
+                <div class="info-grid">
+                    <div class="info-item">
+                        <h4>Date de début</h4>
+                        <p>{{ project.start_date|date:"d F Y" }}</p>
+                    </div>
+                    
+                    {% if project.end_date %}
+                    <div class="info-item">
+                        <h4>Date de fin</h4>
+                        <p>{{ project.end_date|date:"d F Y" }}</p>
+                    </div>
+                    {% endif %}
+                    
+                    <div class="info-item">
+                        <h4>Statut</h4>
+                        <p class="status-text {{ project.status }}">{{ project.get_status_display }}</p>
+                    </div>
+                    
+                    <div class="info-item">
+                        <h4>Durée</h4>
+                        <p>{{ project.get_duration }}</p>
+                    </div>
+                </div>
+            </div>
+        </article>
+        
+        <!-- Projets similaires -->
+        {% if similar_projects %}
+        <section class="similar-projects">
+            <h3>Projets similaires</h3>
+            <div class="projects-grid">
+                {% for similar_project in similar_projects %}
+                <article class="similar-project-card">
+                    {% if similar_project.image %}
+                        <img src="{{ similar_project.image.url }}" alt="{{ similar_project.title }}" class="similar-project-img">
+                    {% else %}
+                        <img src="https://via.placeholder.com/300x200/6c63ff/ffffff?text={{ similar_project.title|slice:':20' }}" alt="{{ similar_project.title }}" class="similar-project-img">
+                    {% endif %}
+                    <div class="similar-project-content">
+                        <h4 class="similar-project-title">{{ similar_project.title }}</h4>
+                        <p class="similar-project-category">{{ similar_project.get_category_display }}</p>
+                        <p class="similar-project-summary">{{ similar_project.summary|truncatewords:15 }}</p>
+                        <a href="{% url 'project_detail' similar_project.slug %}" class="similar-project-link">Voir plus</a>
+                    </div>
+                </article>
+                {% endfor %}
+            </div>
+        </section>
+        {% endif %}
+        
+        <!-- Bouton retour -->
+        <div class="back-to-projects">
+            <a href="{% url 'projects' %}" class="back-btn">
+                <i class="fas fa-arrow-left"></i> Retour aux projets
+            </a>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+
+
