@@ -1,0 +1,382 @@
+/* Reset et base */
+:root {
+    --primary-color: #6c63ff;
+    --secondary-color: #4d44db;
+    --dark-color: #1a1a2e;
+    --darker-color: #16213e;
+    --light-color: #f1f1f1;
+    --lighter-color: #ffffff;
+    --gray-color: #888;
+    --success-color: #28a745;
+    --error-color: #dc3545;
+    --transition: all 0.3s ease;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    background-color: var(--dark-color);
+    color: var(--light-color);
+    overflow-x: hidden;
+    transition: var(--transition);
+}
+
+body.light-mode {
+    background-color: var(--lighter-color);
+    color: #000000 !important;
+}
+
+/* Loader */
+.loader {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: var(--dark-color);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    transition: opacity 0.5s ease;
+}
+
+.loader-text {
+    display: flex;
+    font-size: 2rem;
+    font-weight: bold;
+    color: var(--primary-color);
+}
+
+.loader-text .letter {
+    animation: bounce 0.75s ease infinite alternate;
+    transform: translateY(0);
+}
+
+.loader-text .letter:nth-child(2) { animation-delay: 0.1s; }
+.loader-text .letter:nth-child(3) { animation-delay: 0.2s; }
+.loader-text .letter:nth-child(4) { animation-delay: 0.3s; }
+.loader-text .letter:nth-child(5) { animation-delay: 0.4s; }
+.loader-text .letter:nth-child(6) { animation-delay: 0.5s; }
+.loader-text .letter:nth-child(7) { animation-delay: 0.6s; }
+.loader-text .letter:nth-child(8) { animation-delay: 0.7s; }
+.loader-text .letter:nth-child(9) { animation-delay: 0.8s; }
+.loader-text .letter:nth-child(10) { animation-delay: 0.9s; }
+
+@keyframes bounce {
+    to {
+        transform: translateY(-20px);
+        color: var(--secondary-color);
+    }
+}
+
+/* Curseur personnalisé */
+.cursor {
+    position: fixed;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background-color: var(--primary-color);
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+    mix-blend-mode: difference;
+    z-index: 999;
+    transition: transform 0.1s ease;
+}
+
+.cursor-follower {
+    position: fixed;
+    width: 40px;
+    height: 40px;
+    border: 2px solid var(--primary-color);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+    z-index: 998;
+    transition: transform 0.3s ease, width 0.3s ease, height 0.3s ease;
+}
+
+/* Bouton mode sombre/clair */
+/* Bouton mode sombre/clair - Gestion des deux positions */
+.theme-switch-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+.theme-switch-label {
+    margin: 0 3px;
+    font-size: 0.9rem;
+}
+
+.theme-switch {
+    display: inline-block;
+    height: 18px;
+    width: 36px;
+    position: relative;
+}
+
+.theme-switch input {
+    display: none;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: var(--light-color);
+    transition: var(--transition);
+    border-radius: 18px;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 12px;
+    width: 12px;
+    left: 3px;
+    bottom: 3px;
+    background-color: var(--dark-color);
+    transition: var(--transition);
+    border-radius: 50%;
+}
+
+input:checked + .slider {
+    background-color: var(--dark-color);
+}
+
+input:checked + .slider:before {
+    transform: translateX(18px);
+    background-color: var(--light-color);
+}
+
+/* Position mobile - Entre MS et menu hamburger */
+.mobile-position {
+    display: flex;
+    margin: 0 50px 0 -120px; /* Plus d'espace à droite pour éloigner du menu hamburger */
+}
+
+.desktop-position {
+    display: none;
+}
+
+/* Position desktop - À côté du logo MS */
+@media screen and (min-width: 769px) {
+    .mobile-position {
+        display: none;
+    }
+    
+    /* Cacher l'ancien bouton thème dans le menu */
+    .theme-switch-item {
+        display: none !important;
+    }
+    
+    /* Afficher le bouton thème à côté du logo */
+    .logo-theme-switch {
+        display: flex !important;
+        align-items: center;
+        gap: 10px;
+        margin-left: 8px;
+    }
+    
+    .logo-theme-switch .theme-switch-label {
+        margin: 0 4px;
+        font-size: 1rem;
+    }
+}
+
+.theme-switch-label {
+    margin: 0 10px;
+    font-size: 1.2rem;
+}
+
+.theme-switch {
+    display: inline-block;
+    height: 24px;
+    width: 50px;
+    position: relative;
+}
+
+.theme-switch input {
+    display: none;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: var(--light-color);
+    transition: var(--transition);
+    border-radius: 34px;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 16px;
+    width: 16px;
+    left: 4px;
+    bottom: 4px;
+    background-color: var(--dark-color);
+    transition: var(--transition);
+    border-radius: 50%;
+}
+
+input:checked + .slider {
+    background-color: var(--dark-color);
+}
+
+input:checked + .slider:before {
+    transform: translateX(26px);
+    background-color: var(--light-color);
+}
+
+/* Navigation */
+.navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    padding: 20px 0;
+    z-index: 99;
+    transition: var(--transition);
+    background: none;
+}
+
+.navbar-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+    position: relative;
+}
+
+.navbar-logo-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.navbar-logo {
+    color: var(--light-color);
+    font-size: 1.8rem;
+    font-weight: bold;
+    text-decoration: none;
+    transition: var(--transition);
+}
+
+.navbar-logo:hover {
+    color: var(--primary-color);
+}
+
+/* Bouton thème à côté du logo sur desktop - masqué par défaut */
+.logo-theme-switch {
+    display: none;
+}
+
+.navbar-menu {
+    display: flex;
+    list-style: none;
+}
+
+.navbar-item {
+    margin-left: 30px;
+}
+
+.navbar-links {
+    color: var(--light-color);
+    text-decoration: none;
+    font-size: 1rem;
+    font-weight: 500;
+    position: relative;
+    transition: var(--transition);
+}
+
+.navbar-links:after {
+    content: '';
+    position: absolute;
+    bottom: -5px;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background-color: var(--primary-color);
+    transition: var(--transition);
+}
+
+.navbar-links:hover:after {
+    width: 100%;
+}
+
+.navbar-links:hover {
+    color: var(--primary-color);
+}
+
+/* Bouton CV dans la navigation */
+.cv-download-btn {
+    background-color: var(--primary-color);
+    color: var(--light-color) !important;
+    padding: 8px 16px;
+    border-radius: 25px;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    transition: var(--transition);
+}
+
+.cv-download-btn:after {
+    display: none;
+}
+
+.cv-download-btn:hover {
+    background-color: var(--secondary-color);
+    color: var(--light-color) !important;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(108, 99, 255, 0.4);
+}
+
+.cv-download-btn i {
+    font-size: 0.9rem;
+}
+
+.navbar-toggle {
+    display: none;
+    cursor: pointer;
+}
+
+.bar {
+    display: block;
+    width: 25px;
+    height: 3px;
+    margin: 5px auto;
+    background-color: var(--light-color);
+    transition: var(--transition);
+}
+
+.navbar.scrolled {
+    background-color: rgba(26, 26, 46, 0.9);
+    padding: 15px 0;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+}
+
+.navbar.scrolled .navbar-logo {
+    font-size: 1.5rem;
+}
