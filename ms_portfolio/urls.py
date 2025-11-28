@@ -25,4 +25,7 @@ urlpatterns = [
     
     # API pour le formulaire de contact
     path('contact/submit/', views.contact_submit, name='contact_submit'),
+    
+    # Téléchargement du CV
+    path('cv/download/', views.download_cv, name='download_cv'),
 ]

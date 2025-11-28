@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -6,8 +7,8 @@
     <title>{% block title %}{{ page_title|default:"Portfolio Mohamed SARE" }}{% endblock %}</title>
     
     <!-- CSS -->
-    <link rel="stylesheet" href="/static/css/styles.css">
-    <link rel="stylesheet" href="/static/css/additional-styles.css">
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <link rel="stylesheet" href="{% static 'css/additional-styles.css' %}">
     
     <!-- Font Awesome pour les icônes -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
@@ -42,7 +43,19 @@
     <!-- Navigation -->
     <nav class="navbar">
         <div class="navbar-container">
-            <a href="{% url 'home' %}" class="navbar-logo">MS</a>
+            <div class="navbar-logo-wrapper">
+                <a href="{% url 'home' %}" class="navbar-logo">MS</a>
+                
+                <!-- Bouton mode sombre/clair - Position desktop (à côté du logo) -->
+                <div class="theme-switch-wrapper desktop-position logo-theme-switch">
+                    <label class="theme-switch-label">🌙</label>
+                    <label class="theme-switch">
+                        <input type="checkbox">
+                        <span class="slider"></span>
+                    </label>
+                    <label class="theme-switch-label">☀️</label>
+                </div>
+            </div>
             
             <!-- Bouton mode sombre/clair - Position mobile (entre MS et menu) -->
             <div class="theme-switch-wrapper mobile-position">
@@ -55,18 +68,6 @@
             </div>
             
             <ul class="navbar-menu">
-                <!-- Bouton mode sombre/clair - Position desktop (entre MS et Accueil) -->
-                <li class="navbar-item theme-switch-item desktop-position">
-                    <div class="theme-switch-wrapper">
-                        <label class="theme-switch-label">🌙</label>
-                        <label class="theme-switch">
-                            <input type="checkbox">
-                            <span class="slider"></span>
-                        </label>
-                        <label class="theme-switch-label">☀️</label>
-                    </div>
-                </li>
-                
                 <li class="navbar-item">
                     <a href="{% url 'home' %}" class="navbar-links {% if active_page == 'home' %}active{% endif %}">Accueil</a>
                 </li>
@@ -81,6 +82,11 @@
                 </li>
                 <li class="navbar-item">
                     <a href="{% url 'contact' %}" class="navbar-links {% if active_page == 'contact' %}active{% endif %}">Contact</a>
+                </li>
+                <li class="navbar-item">
+                    <a href="{% url 'download_cv' %}" class="navbar-links cv-download-btn" download>
+                        <i class="fas fa-download"></i> CV
+                    </a>
                 </li>
             </ul>
             
@@ -117,10 +123,10 @@
             <div class="footer-social">
                 <h3>Suivez-moi sur:</h3>
                 <div class="social-icons">
-                    <a href="#" title="LinkedIn"><i class="fab fa-linkedin"></i></a>
-                    <a href="#" title="GitHub"><i class="fab fa-github"></i></a>
+                    <a href="https://www.linkedin.com/in/mohamed-sare-a872a4338?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app" title="LinkedIn"><i class="fab fa-linkedin"></i></a>
+                    <a href="https://github.com/Mohamedsare" title="GitHub"><i class="fab fa-github"></i></a>
                     <a href="#" title="Twitter"><i class="fab fa-twitter"></i></a>
-                    <a href="#" title="Instagram"><i class="fab fa-instagram"></i></a>
+                    <a href="https://www.instagram.com/mohamed.sare.1840070?igsh=MW9zd2Q0dnZnbmxwOQ==" title="Instagram"><i class="fab fa-instagram"></i></a>
                 </div>
             </div>
         </div>
@@ -135,6 +141,6 @@
 
 
     <!-- JavaScript -->
-    <script src="/static/js/main.js"></script>
+    <script src="{% static 'js/main.js' %}"></script>
 </body>
 </html>

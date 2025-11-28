@@ -1,9 +1,10 @@
 from django.shortcuts import render, get_object_or_404
-from django.http import JsonResponse
+from django.http import JsonResponse, FileResponse, Http404
 from django.views.decorators.csrf import csrf_exempt
 from django.utils import timezone
 import json
-from .models import Article, Project
+import os
+from .models import Article, Project, CV
 
 # Vue pour la page d'accueil
 def home(request):
@@ -93,9 +94,29 @@ def projects(request):
 # Vue pour la page compétences
 def skills(request):
     """Vue pour la page compétences"""
+    from .models import SkillCategory, Skill
+    
+    # Récupérer les catégories avec leurs compétences actives
+    categories = SkillCategory.objects.filter(
+        is_active=True
+    ).prefetch_related(
+        'skills'
+    ).order_by('order', 'name')
+    
+    # Séparer les compétences par type
+    bar_skills = {}
+    circle_skills = {}
+    
+    for category in categories:
+        skills_list = category.skills.filter(is_active=True).order_by('order', 'name')
+        bar_skills[category] = skills_list.filter(skill_type='bar')
+        circle_skills[category] = skills_list.filter(skill_type='circle')
+    
     context = {
         'page_title': 'Compétences - Portfolio Mohamed SARE',
-        'active_page': 'skills'
+        'active_page': 'skills',
+        'bar_skills': bar_skills,
+        'circle_skills': circle_skills,
     }
     return render(request, 'ms_portfolio/skills.html', context)
 
@@ -150,3 +171,32 @@ def contact_submit(request):
         'success': False,
         'message': 'Méthode non autorisée.'
     })
+
+# Vue pour télécharger le CV
+def download_cv(request):
+    """Vue pour télécharger le CV"""
+    try:
+        cv = CV.objects.filter(is_active=True).latest('uploaded_at')
+        if cv.file:
+            # Incrémenter le compteur de téléchargements
+            cv.increment_downloads()
+            
+            # Retourner le fichier pour téléchargement
+            file_path = cv.file.path if hasattr(cv.file, 'path') else None
+            if file_path and os.path.exists(file_path):
+                file_handle = open(file_path, 'rb')
+                response = FileResponse(
+                    file_handle,
+                    content_type='application/pdf'
+                )
+                filename = os.path.basename(cv.file.name)
+                response['Content-Disposition'] = f'attachment; filename="{filename}"'
+                return response
+            else:
+                # Si le fichier n'existe pas localement, utiliser l'URL
+                from django.http import HttpResponseRedirect
+                return HttpResponseRedirect(cv.file.url)
+        else:
+            raise Http404("CV non disponible")
+    except CV.DoesNotExist:
+        raise Http404("Aucun CV disponible. Veuillez uploader un CV depuis l'administration.")

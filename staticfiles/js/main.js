@@ -102,7 +102,7 @@ window.addEventListener('scroll', () => {
 // Animation de texte typé
 const typedTextSpan = document.querySelector('.typed-text');
 const cursorBlinkSpan = document.querySelector('.cursor-blink');
-const textArray = ['Mohamed SARE', 'Full-stack Junior', 'Networker', 'Designer', 'Créatif'];
+const textArray = ['Mohamed SARE', 'Développeur Full-Stack Junior', 'Technicien Réseaux Cisco', 'Administrateur Systèmes Junior', 'Passionné d\'IA & Cybersécurité', 'Créateur de Projets Digitaux', 'Intégrateur WordPress & SEO', 'Technicien en Génie Informatique'];
 const typingDelay = 200;
 const erasingDelay = 100;
 const newTextDelay = 2000;
@@ -151,9 +151,10 @@ const animateOnScroll = () => {
             if(element.classList.contains('skill-bar')) {
                 const progressBar = element.querySelector('.progress-bar');
                 const width = progressBar.getAttribute('data-width');
-                progressBar.style.width = '0';
+                // Utiliser une variable CSS pour contrôler la largeur du pseudo-element :after
+                progressBar.style.setProperty('--progress-width', '0%');
                 setTimeout(() => {
-                    progressBar.style.width = width + '%';
+                    progressBar.style.setProperty('--progress-width', width + '%');
                 }, 200);
             }
             

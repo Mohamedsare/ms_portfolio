@@ -19,11 +19,18 @@ from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
 
+# Personnalisation du site admin
+admin.site.site_header = "Portfolio Administration"
+admin.site.site_title = "Portfolio Admin"
+admin.site.index_title = "Bienvenue dans l'administration du Portfolio"
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('ms_portfolio.urls')),
 ]
 
-# Ajouter les URLs pour les médias en développement
+# Ajouter les URLs pour les fichiers statiques et médias en développement
 if settings.DEBUG:
+    from django.contrib.staticfiles.urls import staticfiles_urlpatterns
+    urlpatterns += staticfiles_urlpatterns()
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

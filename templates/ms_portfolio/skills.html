@@ -7,132 +7,52 @@
         <h2 class="section-title">Mes <span>Compétences</span></h2>
         
         <div class="skills-container">
-            <!-- Compétences Frontend -->
-            <div class="skill-category">
-                <h3>Frontend</h3>
-                <div class="skill-bar">
-                    <div class="skill-info">
-                        <span>HTML/CSS</span>
-                        <span>90%</span>
+            {% for category, skills in bar_skills.items %}
+                {% if skills %}
+                <div class="skill-category">
+                    <h3>{{ category.name }}</h3>
+                    {% for skill in skills %}
+                    <div class="skill-bar">
+                        <div class="skill-info">
+                            <span>{{ skill.name }}</span>
+                            <span>{{ skill.percentage }}%</span>
+                        </div>
+                        <div class="progress-bar" data-width="{{ skill.percentage }}"></div>
                     </div>
-                    <div class="progress-bar" data-width="95"></div>
+                    {% endfor %}
                 </div>
-                <div class="skill-bar">
-                    <div class="skill-info">
-                        <span>JavaScript</span>
-                        <span>75%</span>
-                    </div>
-                    <div class="progress-bar" data-width="90"></div>
+                {% endif %}
+            {% empty %}
+                <div class="no-skills">
+                    <p>Aucune compétence disponible pour le moment.</p>
+                    <p>Ajoutez des compétences depuis l'administration Django.</p>
                 </div>
-                <div class="skill-bar">
-                    <div class="skill-info">
-                        <span>React</span>
-                        <span>55%</span>
-                    </div>
-                    <div class="progress-bar" data-width="85"></div>
-                </div>
-            </div>
-            
-            <!-- Compétences Backend -->
-            <div class="skill-category">
-                <h3>Backend</h3>
-                <div class="skill-bar">
-                    <div class="skill-info">
-                        <span>PHP</span>
-                        <span>75%</span>
-                    </div>
-                    <div class="progress-bar" data-width="75"></div>
-                </div>
-                <div class="skill-bar">
-                    <div class="skill-info">
-                        <span>Python/Django</span>
-                        <span>75%</span>
-                    </div>
-                    <div class="progress-bar" data-width="85"></div>
-                </div>
-                <div class="skill-bar">
-                    <div class="skill-info">
-                        <span>SQL</span>
-                        <span>80%</span>
-                    </div>
-                    <div class="progress-bar" data-width="80"></div>
-                </div>
-            </div>
-            
-            <!-- Compétences Design -->
-            <div class="skill-category">
-                <h3>Design & Outils</h3>
-                <div class="skill-bar">
-                    <div class="skill-info">
-                        <span>Figma</span>
-                        <span>50%</span>
-                    </div>
-                    <div class="progress-bar" data-width="50"></div>
-                </div>
-                <div class="skill-bar">
-                    <div class="skill-info">
-                        <span>Photoshop</span>
-                        <span>75%</span>
-                    </div>
-                    <div class="progress-bar" data-width="75"></div>
-                </div>
-                <div class="skill-bar">
-                    <div class="skill-info">
-                        <span>Git</span>
-                        <span>70%</span>
-                    </div>
-                    <div class="progress-bar" data-width="70"></div>
-                </div>
-            </div>
+            {% endfor %}
         </div>
         
         <!-- Compétences avancées avec cercles -->
+        {% if circle_skills %}
         <div class="skills-container" style="margin-top: 60px;">
-            <div class="skill-category">
-                <div class="skill-circle">
-                    <div class="circle-progress" data-value="95">
-                        <svg class="circle-chart" viewBox="0 0 100 100">
-                            <circle class="circle-bg" cx="50" cy="50" r="40"></circle>
-                            <circle class="circle-fill" cx="50" cy="50" r="40"></circle>
-                        </svg>
-                        <div class="circle-info">
-                            <span class="percent">95%</span>
-                            <span>Créativité</span>
+            {% for category, skills in circle_skills.items %}
+                {% for skill in skills %}
+                <div class="skill-category">
+                    <div class="skill-circle">
+                        <div class="circle-progress" data-value="{{ skill.percentage }}">
+                            <svg class="circle-chart" viewBox="0 0 100 100">
+                                <circle class="circle-bg" cx="50" cy="50" r="40"></circle>
+                                <circle class="circle-fill" cx="50" cy="50" r="40"></circle>
+                            </svg>
+                            <div class="circle-info">
+                                <span class="percent">{{ skill.percentage }}%</span>
+                                <span>{{ skill.name }}</span>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            
-            <div class="skill-category">
-                <div class="skill-circle">
-                    <div class="circle-progress" data-value="90">
-                        <svg class="circle-chart" viewBox="0 0 100 100">
-                            <circle class="circle-bg" cx="50" cy="50" r="40"></circle>
-                            <circle class="circle-fill" cx="50" cy="50" r="40"></circle>
-                        </svg>
-                        <div class="circle-info">
-                            <span class="percent">90%</span>
-                            <span>Résolution de problèmes</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="skill-category">
-                <div class="skill-circle">
-                    <div class="circle-progress" data-value="85">
-                        <svg class="circle-chart" viewBox="0 0 100 100">
-                            <circle class="circle-bg" cx="50" cy="50" r="40"></circle>
-                            <circle class="circle-fill" cx="50" cy="50" r="40"></circle>
-                        </svg>
-                        <div class="circle-info">
-                            <span class="percent">85%</span>
-                            <span>Communication</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
+                {% endfor %}
+            {% endfor %}
         </div>
+        {% endif %}
     </div>
 </section>
 {% endblock %}

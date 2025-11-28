@@ -168,3 +168,72 @@ class ContactMessage(models.Model):
         """Archive le message"""
         self.status = 'archived'
         self.save(update_fields=['status'])
+
+class SkillCategory(models.Model):
+    """Modèle pour les catégories de compétences"""
+    name = models.CharField(max_length=100, verbose_name="Nom de la catégorie")
+    description = models.TextField(blank=True, null=True, verbose_name="Description")
+    order = models.PositiveIntegerField(default=0, verbose_name="Ordre d'affichage")
+    is_active = models.BooleanField(default=True, verbose_name="Active")
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name="Date de création")
+    updated_at = models.DateTimeField(auto_now=True, verbose_name="Dernière modification")
+    
+    class Meta:
+        verbose_name = "Catégorie de compétence"
+        verbose_name_plural = "Catégories de compétences"
+        ordering = ['order', 'name']
+    
+    def __str__(self):
+        return self.name
+
+class Skill(models.Model):
+    """Modèle pour les compétences"""
+    TYPE_CHOICES = [
+        ('bar', 'Barre de progression'),
+        ('circle', 'Cercle de progression'),
+    ]
+    
+    name = models.CharField(max_length=100, verbose_name="Nom de la compétence")
+    category = models.ForeignKey(SkillCategory, on_delete=models.CASCADE, related_name='skills', verbose_name="Catégorie")
+    skill_type = models.CharField(max_length=10, choices=TYPE_CHOICES, default='bar', verbose_name="Type d'affichage")
+    percentage = models.PositiveIntegerField(verbose_name="Pourcentage", help_text="Valeur entre 0 et 100")
+    order = models.PositiveIntegerField(default=0, verbose_name="Ordre d'affichage")
+    is_active = models.BooleanField(default=True, verbose_name="Active")
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name="Date de création")
+    updated_at = models.DateTimeField(auto_now=True, verbose_name="Dernière modification")
+    
+    class Meta:
+        verbose_name = "Compétence"
+        verbose_name_plural = "Compétences"
+        ordering = ['category__order', 'category__name', 'order', 'name']
+    
+    def __str__(self):
+        return f"{self.name} ({self.percentage}%)"
+    
+    def clean(self):
+        """Valide que le pourcentage est entre 0 et 100"""
+        from django.core.exceptions import ValidationError
+        if self.percentage > 100:
+            raise ValidationError({'percentage': 'Le pourcentage doit être entre 0 et 100.'})
+
+class CV(models.Model):
+    """Modèle pour gérer le CV téléchargeable"""
+    title = models.CharField(max_length=200, default="CV - Mohamed SARE", verbose_name="Titre")
+    file = models.FileField(upload_to='cv/', verbose_name="Fichier CV", help_text="Format PDF recommandé")
+    is_active = models.BooleanField(default=True, verbose_name="Actif", help_text="Si actif, le CV sera disponible au téléchargement")
+    uploaded_at = models.DateTimeField(auto_now_add=True, verbose_name="Date d'upload")
+    updated_at = models.DateTimeField(auto_now=True, verbose_name="Dernière modification")
+    download_count = models.PositiveIntegerField(default=0, verbose_name="Nombre de téléchargements")
+    
+    class Meta:
+        verbose_name = "CV"
+        verbose_name_plural = "CV"
+        ordering = ['-uploaded_at']
+    
+    def __str__(self):
+        return f"{self.title} ({'Actif' if self.is_active else 'Inactif'})"
+    
+    def increment_downloads(self):
+        """Incrémente le compteur de téléchargements"""
+        self.download_count += 1
+        self.save(update_fields=['download_count'])
