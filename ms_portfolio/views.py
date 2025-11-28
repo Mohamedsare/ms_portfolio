@@ -1,7 +1,8 @@
 from django.shortcuts import render, get_object_or_404
-from django.http import JsonResponse, FileResponse, Http404
+from django.http import JsonResponse, FileResponse, Http404, HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.utils import timezone
+from django.conf import settings
 import json
 import os
 from .models import Article, Project, CV
@@ -16,9 +17,11 @@ def home(request):
     ).order_by('-published_date')[:3]
     
     context = {
-        'page_title': 'Accueil - Portfolio Mohamed SARE',
+        'page_title': 'Accueil - Portfolio Mohamed SARE - Développeur Web Python/Django, IA et Cybersécurité | Burkina Faso & Maroc',
         'active_page': 'home',
-        'latest_articles': latest_articles
+        'latest_articles': latest_articles,
+        'meta_description': 'Portfolio officiel de Mohamed SARE — Développeur Web, Python/Django, Intelligence Artificielle et Cybersécurité. Basé au Burkina Faso et au Maroc, je crée des applications web modernes, rapides et sécurisées. Étudiant en génie informatique, passionné par l\'IA, les projets innovants et la création de solutions technologiques utiles pour l\'Afrique.',
+        'meta_keywords': 'Mohamed Saré, Mohamed SARE, développeur web Burkina Faso, développeur Django, développeur Python, génie informatique, portfolio développeur, intelligence artificielle, machine learning Burkina Faso, cybersécurité Burkina Faso, développeur web Maroc, DUT génie informatique, développeur backend Python, création site web Burkina Faso, expert informatique Burkina Faso, développeur full stack, développeur back-end Python, développeur Django Maroc, développeur IA, freelance développeur Burkina Faso',
     }
     return render(request, 'ms_portfolio/home.html', context)
 
@@ -36,11 +39,27 @@ def article_detail(request, slug):
         is_published=True
     ).exclude(id=article.id).order_by('-published_date')[:3]
     
+    # Construire l'URL canonique
+    canonical_url = request.build_absolute_uri(article.get_absolute_url())
+    
+    # Métadonnées SEO pour l'article
+    meta_description = article.summary[:160] if len(article.summary) > 160 else article.summary
+    meta_keywords = f"{article.title}, {article.get_category_display}, Mohamed Saré, Mohamed SARE, développeur Django, développeur Python, génie informatique, intelligence artificielle, machine learning Burkina Faso, cybersécurité Burkina Faso, développeur web Maroc, DUT génie informatique, portfolio développeur, développement web, blog développement"
+    
+    # Image pour Open Graph
+    og_image = request.build_absolute_uri(article.image.url) if article.image else request.build_absolute_uri('/static/img/mhd.jpeg')
+    
     context = {
-        'page_title': f'{article.title} - Portfolio Mohamed SARE',
+        'page_title': f'{article.title} - Portfolio Mohamed SARE | Développeur Web Python/Django, IA et Cybersécurité',
         'active_page': 'blog',
         'article': article,
-        'similar_articles': similar_articles
+        'similar_articles': similar_articles,
+        'meta_description': meta_description,
+        'meta_keywords': meta_keywords,
+        'canonical_url': canonical_url,
+        'og_type': 'article',
+        'og_image': og_image,
+        'schema_type': 'BlogPosting',
     }
     return render(request, 'ms_portfolio/article_detail.html', context)
 
@@ -57,11 +76,27 @@ def project_detail(request, slug):
         category=project.category
     ).exclude(id=project.id).order_by('order', '-created_at')[:3]
     
+    # Construire l'URL canonique
+    canonical_url = request.build_absolute_uri(project.get_absolute_url())
+    
+    # Métadonnées SEO pour le projet
+    meta_description = project.summary[:160] if len(project.summary) > 160 else project.summary
+    meta_keywords = f"{project.title}, {project.get_category_display}, Mohamed Saré, Mohamed SARE, développeur Django, développeur Python, génie informatique, intelligence artificielle, machine learning Burkina Faso, cybersécurité Burkina Faso, développeur web Maroc, création site web Burkina Faso, portfolio développeur, projet développement, application web moderne et sécurisée"
+    
+    # Image pour Open Graph
+    og_image = request.build_absolute_uri(project.image.url) if project.image else request.build_absolute_uri('/static/img/mhd.jpeg')
+    
     context = {
-        'page_title': f'{project.title} - Portfolio Mohamed SARE',
+        'page_title': f'{project.title} - Portfolio Mohamed SARE | Développeur Web Python/Django, IA et Cybersécurité',
         'active_page': 'projects',
         'project': project,
-        'similar_projects': similar_projects
+        'similar_projects': similar_projects,
+        'meta_description': meta_description,
+        'meta_keywords': meta_keywords,
+        'canonical_url': canonical_url,
+        'og_type': 'website',
+        'og_image': og_image,
+        'schema_type': 'CreativeWork',
     }
     return render(request, 'ms_portfolio/project_detail.html', context)
 
@@ -69,8 +104,10 @@ def project_detail(request, slug):
 def about(request):
     """Vue pour la page à propos"""
     context = {
-        'page_title': 'À propos - Portfolio Mohamed SARE',
-        'active_page': 'about'
+        'page_title': 'À propos - Portfolio Mohamed SARE - Développeur Web Python/Django, IA et Cybersécurité | Burkina Faso & Maroc',
+        'active_page': 'about',
+        'meta_description': 'Découvrez le parcours de Mohamed SARE, développeur Web Python/Django spécialisé en Intelligence Artificielle et Cybersécurité. Étudiant en génie informatique au Burkina Faso et au Maroc, passionné par l\'IA, les projets innovants et la création de solutions technologiques pour l\'Afrique.',
+        'meta_keywords': 'À propos Mohamed Saré, Mohamed SARE, développeur Burkina Faso, développeur Maroc, parcours développeur, DUT Génie Informatique, étudiant génie informatique, développeur Django expérimenté, expert informatique Burkina Faso, développeur IA',
     }
     return render(request, 'ms_portfolio/about.html', context)
 
@@ -84,10 +121,12 @@ def projects(request):
     categories = Project.CATEGORY_CHOICES
     
     context = {
-        'page_title': 'Projets - Portfolio Mohamed SARE',
+        'page_title': 'Projets - Portfolio Mohamed SARE - Développeur Web Python/Django, IA et Cybersécurité | Burkina Faso & Maroc',
         'active_page': 'projects',
         'projects': projects_list,
-        'categories': categories
+        'categories': categories,
+        'meta_description': 'Découvrez les projets de développement web, applications Django/Python, solutions d\'Intelligence Artificielle et projets de cybersécurité de Mohamed SARE. Applications web modernes et sécurisées créées au Burkina Faso et au Maroc.',
+        'meta_keywords': 'Projets développement web, portfolio projets, applications web Django Burkina Faso, projets développeur Python, Mohamed SARE projets, création application web Django Burkina Faso, solution IA et machine learning, projets cybersécurité, applications web moderne et sécurisée',
     }
     return render(request, 'ms_portfolio/projects.html', context)
 
@@ -113,10 +152,12 @@ def skills(request):
         circle_skills[category] = skills_list.filter(skill_type='circle')
     
     context = {
-        'page_title': 'Compétences - Portfolio Mohamed SARE',
+        'page_title': 'Compétences - Portfolio Mohamed SARE - Développeur Web Python/Django, IA et Cybersécurité | Burkina Faso & Maroc',
         'active_page': 'skills',
         'bar_skills': bar_skills,
         'circle_skills': circle_skills,
+        'meta_description': 'Compétences techniques de Mohamed SARE : développement Web Python/Django, Intelligence Artificielle, Machine Learning, Cybersécurité, réseaux informatiques. Expert en Python, Django, IA, cybersécurité et technologies web modernes au Burkina Faso et au Maroc.',
+        'meta_keywords': 'Compétences développeur, skills développeur web, technologies développement, Python Django, intelligence artificielle, machine learning, cybersécurité, développeur backend Python, expert en cybersécurité et développement web, compétences full-stack Burkina Faso',
     }
     return render(request, 'ms_portfolio/skills.html', context)
 
@@ -124,8 +165,10 @@ def skills(request):
 def contact(request):
     """Vue pour la page contact"""
     context = {
-        'page_title': 'Contact - Portfolio Mohamed SARE',
-        'active_page': 'contact'
+        'page_title': 'Contact - Portfolio Mohamed SARE - Développeur Web Python/Django, IA et Cybersécurité | Burkina Faso & Maroc',
+        'active_page': 'contact',
+        'meta_description': 'Contactez Mohamed SARE, développeur Web Python/Django spécialisé en Intelligence Artificielle et Cybersécurité. Disponible pour vos projets de développement web, applications Django/Python, solutions IA et cybersécurité au Burkina Faso et au Maroc. Réponse rapide garantie.',
+        'meta_keywords': 'Contact développeur Burkina Faso, contact développeur Maroc, freelance développeur, contact Mohamed SARE, devis développement web, services de développement web professionnel, freelance en développement informatique Burkina Faso, contact développeur Django, contact développeur IA',
     }
     return render(request, 'ms_portfolio/contact.html', context)
 
@@ -171,6 +214,25 @@ def contact_submit(request):
         'success': False,
         'message': 'Méthode non autorisée.'
     })
+
+# Vue pour servir robots.txt
+def robots_txt(request):
+    """Vue pour servir le fichier robots.txt"""
+    robots_path = os.path.join(settings.BASE_DIR, 'static', 'robots.txt')
+    try:
+        with open(robots_path, 'r', encoding='utf-8') as f:
+            content = f.read()
+            # Remplacer le placeholder par le domaine réel
+            domain = request.build_absolute_uri('/').rstrip('/')
+            content = content.replace('https://votre-domaine.com', domain)
+            return HttpResponse(content, content_type='text/plain')
+    except FileNotFoundError:
+        # Si le fichier n'existe pas, retourner un robots.txt par défaut
+        domain = request.build_absolute_uri('/').rstrip('/')
+        return HttpResponse(
+            f"User-agent: *\nAllow: /\nDisallow: /admin/\nSitemap: {domain}/sitemap.xml",
+            content_type='text/plain'
+        )
 
 # Vue pour télécharger le CV
 def download_cv(request):

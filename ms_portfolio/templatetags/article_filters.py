@@ -1,4 +1,5 @@
 from django import template
+from django.conf import settings
 from django.utils.safestring import mark_safe
 import markdown
 import re
@@ -133,3 +134,13 @@ def format_article_advanced(content):
     html_content = html_content.replace('<h6>', '<h6 class="article-heading">')
     
     return mark_safe(html_content)
+
+@register.simple_tag(takes_context=True)
+def absolute_static(context, path):
+    """
+    Tag pour obtenir l'URL absolue d'un fichier statique
+    """
+    request = context.get('request')
+    if request:
+        return request.build_absolute_uri(settings.STATIC_URL + path)
+    return settings.STATIC_URL + path

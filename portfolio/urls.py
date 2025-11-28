@@ -15,9 +15,11 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
+from django.contrib.sitemaps.views import sitemap
 from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
+from ms_portfolio.sitemaps import sitemaps
 
 # Personnalisation du site admin
 admin.site.site_header = "Portfolio Administration"
@@ -27,6 +29,8 @@ admin.site.index_title = "Bienvenue dans l'administration du Portfolio"
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('ms_portfolio.urls')),
+    # Sitemap pour le référencement SEO
+    path('sitemap.xml', sitemap, {'sitemaps': sitemaps}, name='django.contrib.sitemaps.views.sitemap'),
 ]
 
 # Ajouter les URLs pour les fichiers statiques et médias en développement

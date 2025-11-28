@@ -1,10 +1,44 @@
 {% load static %}
+{% load article_filters %}
 <!DOCTYPE html>
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}{{ page_title|default:"Portfolio Mohamed SARE" }}{% endblock %}</title>
+    
+    <!-- SEO Meta Tags -->
+    <title>{% block title %}{{ page_title|default:"Portfolio Mohamed SARE - Développeur Web Python/Django, IA et Cybersécurité | Burkina Faso & Maroc" }}{% endblock %}</title>
+    <meta name="description" content="{% block meta_description %}{{ meta_description|default:"Portfolio officiel de Mohamed SARE — Développeur Web, Python/Django, Intelligence Artificielle et Cybersécurité. Basé au Burkina Faso et au Maroc, je crée des applications web modernes, rapides et sécurisées. Étudiant en génie informatique, passionné par l'IA, les projets innovants et la création de solutions technologiques utiles pour l'Afrique." }}{% endblock %}">
+    <meta name="keywords" content="{% block meta_keywords %}{{ meta_keywords|default:"Mohamed Saré, Mohamed SARE, développeur web Burkina Faso, développeur Django, développeur Python, génie informatique, portfolio développeur, intelligence artificielle, machine learning Burkina Faso, cybersécurité Burkina Faso, développeur web Maroc, DUT génie informatique, développeur backend Python, création site web Burkina Faso, expert informatique Burkina Faso, développeur full stack, développeur back-end Python, création de site web Burkina Faso, développeur Django Maroc, développeur IA, machine learning Burkina Faso, étudiant DUT génie informatique Maroc, freelance développeur Burkina Faso, développeur d'application web moderne et sécurisée, solution IA et machine learning pour entreprises, étudiant en génie informatique au Maroc, expert en cybersécurité et développement web" }}{% endblock %}">
+    <meta name="author" content="Mohamed SARE">
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+    <meta name="language" content="French">
+    <meta name="geo.region" content="BF">
+    <meta name="geo.placename" content="Burkina Faso">
+    <meta name="geo.position" content="12.3714;-1.5197">
+    <meta name="ICBM" content="12.3714, -1.5197">
+    
+    <!-- Canonical URL -->
+    <link rel="canonical" href="{% block canonical_url %}{{ canonical_url|default:request.build_absolute_uri }}{% endblock %}">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="{% block og_type %}{{ og_type|default:"website" }}{% endblock %}">
+    <meta property="og:url" content="{% block og_url %}{{ request.build_absolute_uri }}{% endblock %}">
+    <meta property="og:title" content="{% block og_title %}{{ page_title|default:"Portfolio Mohamed SARE - Développeur Web Python/Django, IA et Cybersécurité | Burkina Faso & Maroc" }}{% endblock %}">
+    <meta property="og:description" content="{% block og_description %}{{ meta_description|default:"Portfolio officiel de Mohamed SARE — Développeur Web, Python/Django, Intelligence Artificielle et Cybersécurité. Basé au Burkina Faso et au Maroc, je crée des applications web modernes, rapides et sécurisées. Étudiant en génie informatique, passionné par l'IA, les projets innovants et la création de solutions technologiques utiles pour l'Afrique." }}{% endblock %}">
+    <meta property="og:image" content="{% block og_image %}{% if og_image %}{{ og_image }}{% else %}{% absolute_static 'img/mhd.jpeg' %}{% endif %}{% endblock %}">
+    <meta property="og:locale" content="fr_FR">
+    <meta property="og:site_name" content="Portfolio Mohamed SARE">
+    
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:url" content="{% block twitter_url %}{{ request.build_absolute_uri }}{% endblock %}">
+    <meta name="twitter:title" content="{% block twitter_title %}{{ page_title|default:"Portfolio Mohamed SARE - Développeur Web Python/Django, IA et Cybersécurité | Burkina Faso & Maroc" }}{% endblock %}">
+    <meta name="twitter:description" content="{% block twitter_description %}{{ meta_description|default:"Portfolio officiel de Mohamed SARE — Développeur Web, Python/Django, Intelligence Artificielle et Cybersécurité. Basé au Burkina Faso et au Maroc." }}{% endblock %}">
+    <meta name="twitter:image" content="{% block twitter_image %}{% if og_image %}{{ og_image }}{% else %}{% absolute_static 'img/mhd.jpeg' %}{% endif %}{% endblock %}">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="{% static 'img/favicon.ico' %}">
     
     <!-- CSS -->
     <link rel="stylesheet" href="{% static 'css/styles.css' %}">
@@ -15,6 +49,48 @@
     
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Schema.org Structured Data -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "{% block schema_type %}{{ schema_type|default:"Person" }}{% endblock %}",
+        "name": "Mohamed SARE",
+        "jobTitle": "Développeur Web Python/Django, Intelligence Artificielle et Cybersécurité",
+        "url": "{{ request.build_absolute_uri }}",
+        "image": "{% absolute_static 'img/mhd.jpeg' %}",
+        "sameAs": [
+            "https://www.linkedin.com/in/mohamed-sare-a872a4338",
+            "https://github.com/Mohamedsare",
+            "https://www.instagram.com/mohamed.sare.1840070"
+        ],
+        "address": {
+            "@type": "PostalAddress",
+            "addressCountry": "BF",
+            "addressRegion": "Burkina Faso et Maroc",
+            "addressLocality": "Ouagadougou"
+        },
+        "knowsAbout": [
+            "Développement Web",
+            "Développement Full-Stack",
+            "Python",
+            "Django",
+            "Intelligence Artificielle",
+            "Machine Learning",
+            "Cybersécurité",
+            "Réseaux Informatiques",
+            "Design UI/UX",
+            "JavaScript",
+            "React",
+            "Backend Development",
+            "Génie Informatique"
+        ],
+        "alumniOf": {
+            "@type": "EducationalOrganization",
+            "name": "DUT Génie Informatique"
+        }
+    }
+    </script>
 </head>
 <body>
     <!-- Loader -->

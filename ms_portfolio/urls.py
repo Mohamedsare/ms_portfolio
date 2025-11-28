@@ -28,4 +28,7 @@ urlpatterns = [
     
     # Téléchargement du CV
     path('cv/download/', views.download_cv, name='download_cv'),
+    
+    # Robots.txt pour le SEO
+    path('robots.txt', views.robots_txt, name='robots_txt'),
 ]

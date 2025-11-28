@@ -1,0 +1,25 @@
+# robots.txt pour le portfolio de Mohamed SARE
+# Optimisé pour le référencement au Burkina Faso, en Afrique et dans le Monde
+
+User-agent: *
+Allow: /
+
+# Bloquer l'indexation de l'administration
+Disallow: /admin/
+Disallow: /admin
+Disallow: /staticfiles/
+
+# Autoriser tous les autres contenus
+Allow: /article/
+Allow: /project/
+Allow: /about/
+Allow: /projects/
+Allow: /skills/
+Allow: /contact/
+
+# Sitemap
+Sitemap: https://votre-domaine.com/sitemap.xml
+
+# Crawl-delay pour éviter la surcharge (optionnel)
+Crawl-delay: 1
+

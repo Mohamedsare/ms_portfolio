@@ -106,21 +106,12 @@ body.light-mode {
 }
 
 /* Bouton mode sombre/clair */
-.theme-switch-wrapper {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    display: flex;
-    align-items: center;
-    z-index: 100;
-}
-
 /* Bouton mode sombre/clair - Gestion des deux positions */
 .theme-switch-wrapper {
     display: flex;
     align-items: center;
     justify-content: center;
+    position: relative;
 }
 
 .theme-switch-label {
@@ -175,22 +166,35 @@ input:checked + .slider:before {
 /* Position mobile - Entre MS et menu hamburger */
 .mobile-position {
     display: flex;
-    margin: 0 15px;
+    margin: 0 50px 0 -120px; /* Plus d'espace à droite pour éloigner du menu hamburger */
 }
 
 .desktop-position {
     display: none;
 }
 
-/* Position desktop - Entre MS et Accueil */
+/* Position desktop - À côté du logo MS */
 @media screen and (min-width: 769px) {
     .mobile-position {
         display: none;
     }
     
-    .desktop-position {
-        display: block;
-        margin: 0 5px 0 5px;
+    /* Cacher l'ancien bouton thème dans le menu */
+    .theme-switch-item {
+        display: none !important;
+    }
+    
+    /* Afficher le bouton thème à côté du logo */
+    .logo-theme-switch {
+        display: flex !important;
+        align-items: center;
+        gap: 10px;
+        margin-left: 8px;
+    }
+    
+    .logo-theme-switch .theme-switch-label {
+        margin: 0 4px;
+        font-size: 1rem;
     }
 }
 
@@ -265,6 +269,12 @@ input:checked + .slider:before {
     position: relative;
 }
 
+.navbar-logo-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
 .navbar-logo {
     color: var(--light-color);
     font-size: 1.8rem;
@@ -275,6 +285,11 @@ input:checked + .slider:before {
 
 .navbar-logo:hover {
     color: var(--primary-color);
+}
+
+/* Bouton thème à côté du logo sur desktop - masqué par défaut */
+.logo-theme-switch {
+    display: none;
 }
 
 .navbar-menu {
@@ -312,6 +327,34 @@ input:checked + .slider:before {
 
 .navbar-links:hover {
     color: var(--primary-color);
+}
+
+/* Bouton CV dans la navigation */
+.cv-download-btn {
+    background-color: var(--primary-color);
+    color: var(--light-color) !important;
+    padding: 8px 16px;
+    border-radius: 25px;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    transition: var(--transition);
+}
+
+.cv-download-btn:after {
+    display: none;
+}
+
+.cv-download-btn:hover {
+    background-color: var(--secondary-color);
+    color: var(--light-color) !important;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(108, 99, 255, 0.4);
+}
+
+.cv-download-btn i {
+    font-size: 0.9rem;
 }
 
 .navbar-toggle {
