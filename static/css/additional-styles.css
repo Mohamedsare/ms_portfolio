@@ -889,12 +889,31 @@
     flex-direction: column;
     justify-content: flex-end;
     padding: 20px;
-    opacity: 0;
+    opacity: 1;
     transition: var(--transition);
 }
 
-.project-card:hover .project-overlay {
-    opacity: 1;
+/* Sur desktop, l'overlay est toujours visible */
+@media screen and (min-width: 769px) {
+    .project-overlay {
+        opacity: 1;
+    }
+    
+    .project-card:hover .project-overlay {
+        background: linear-gradient(to top, rgba(77, 68, 219, 0.95), transparent);
+    }
+}
+
+/* Sur mobile, on garde l'effet hover */
+@media screen and (max-width: 768px) {
+    .project-overlay {
+        opacity: 0;
+    }
+    
+    .project-card:hover .project-overlay,
+    .project-card:active .project-overlay {
+        opacity: 1;
+    }
 }
 
 .project-card:hover .project-img {
@@ -905,7 +924,7 @@
     color: var(--light-color);
     font-size: 1.3rem;
     margin-bottom: 10px;
-    transform: translateY(20px);
+    transform: translateY(0);
     transition: var(--transition);
 }
 
@@ -913,9 +932,9 @@
     color: var(--light-color);
     font-size: 0.9rem;
     margin-bottom: 15px;
-    transform: translateY(20px);
+    transform: translateY(0);
     transition: var(--transition);
-    opacity: 0.8;
+    opacity: 0.9;
 }
 
 .project-link {
@@ -928,14 +947,43 @@
     background-color: var(--light-color);
     color: var(--primary-color);
     border-radius: 50px;
-    transform: translateY(20px);
+    transform: translateY(0);
     transition: var(--transition);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
 }
 
-.project-card:hover .project-title,
-.project-card:hover .project-category,
-.project-card:hover .project-link {
-    transform: translateY(0);
+.project-link:hover {
+    background-color: var(--primary-color);
+    color: var(--light-color);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(108, 99, 255, 0.4);
+}
+
+/* Sur mobile, on garde l'animation */
+@media screen and (max-width: 768px) {
+    .project-title,
+    .project-category,
+    .project-link {
+        transform: translateY(20px);
+    }
+    
+    .project-card:hover .project-title,
+    .project-card:hover .project-category,
+    .project-card:hover .project-link,
+    .project-card:active .project-title,
+    .project-card:active .project-category,
+    .project-card:active .project-link {
+        transform: translateY(0);
+    }
+}
+
+/* Sur desktop, les éléments sont toujours visibles */
+@media screen and (min-width: 769px) {
+    .project-card:hover .project-title,
+    .project-card:hover .project-category,
+    .project-card:hover .project-link {
+        transform: translateY(-2px);
+    }
 }
 
 
@@ -1585,20 +1633,45 @@
 
 .blog-btn {
     align-self: flex-start;
-    padding: 8px 22px;
+    padding: 10px 25px;
     background-color: var(--primary-color);
     color: var(--light-color);
     border-radius: 50px;
     text-decoration: none;
-    font-weight: 500;
+    font-weight: 600;
     font-size: 0.95rem;
-    transition: background 0.3s, transform 0.3s;
-    box-shadow: 0 2px 8px rgba(108, 99, 255, 0.08);
+    display: inline-block;
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    box-shadow: 0 4px 12px rgba(108, 99, 255, 0.3);
+    position: relative;
+    overflow: hidden;
+    z-index: 1;
+}
+
+.blog-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+    transition: left 0.5s ease;
+    z-index: -1;
+}
+
+.blog-btn:hover::before {
+    left: 100%;
 }
 
 .blog-btn:hover {
     background-color: var(--secondary-color);
-    transform: translateY(-2px);
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(108, 99, 255, 0.5);
+}
+
+.blog-btn:active {
+    transform: translateY(-1px);
 }
 
 /* Styles pour les projets dynamiques */
