@@ -66,10 +66,16 @@ WSGI_APPLICATION = 'portfolio.wsgi.application'
 
 # --- DATABASE (PostgreSQL via Render) ---
 DATABASES = {
-    'default': dj_database_url.config(
-        default=f'sqlite:///{BASE_DIR / "db.sqlite3"}'
-    )
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'mohamed_db',
+        'USER': 'mohamed',
+        'PASSWORD': 'Mohamedsare1!',
+        'HOST': 'localhost',
+        'PORT': '5432',
+    }
 }
+
 
 # --- PASSWORD VALIDATION ---
 AUTH_PASSWORD_VALIDATORS = [

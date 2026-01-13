@@ -102,7 +102,7 @@ window.addEventListener('scroll', () => {
 // Animation de texte typé
 const typedTextSpan = document.querySelector('.typed-text');
 const cursorBlinkSpan = document.querySelector('.cursor-blink');
-const textArray = ['Mohamed SARE', 'Développeur Full-Stack Junior', 'Technicien Réseaux Cisco', 'Administrateur Systèmes Junior', 'Passionné d\'IA & Cybersécurité', 'Créateur de Projets Digitaux', 'Intégrateur WordPress & SEO', 'Technicien en Génie Informatique'];
+const textArray = ['Mohamed SARE', 'Développeur Full-Stack', 'Technicien Réseaux Cisco', 'Administrateur Systèmes Junior', 'Passionné d\'IA & Cybersécurité', 'Créateur de Projets Digitaux', 'Intégrateur WordPress & SEO'];
 const typingDelay = 200;
 const erasingDelay = 100;
 const newTextDelay = 2000;

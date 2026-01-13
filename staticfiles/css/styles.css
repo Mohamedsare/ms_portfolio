@@ -166,7 +166,8 @@ input:checked + .slider:before {
 /* Position mobile - Entre MS et menu hamburger */
 .mobile-position {
     display: flex;
-    margin: 0 50px 0 -120px; /* Plus d'espace à droite pour éloigner du menu hamburger */
+    margin: 0 80px 0 -120px; /* Plus d'espace à droite pour éloigner du menu hamburger */
+    margin-top: -39px;
 }
 
 .desktop-position {
