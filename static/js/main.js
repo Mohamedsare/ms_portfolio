@@ -54,23 +54,69 @@ hoverElements.forEach(el => {
     });
 });
 
-// Mode sombre/clair
+// Mode sombre/clair avec persistance
 const themeSwitches = document.querySelectorAll('.theme-switch input');
 
+// Fonction pour appliquer le thème
+function applyTheme(isLightMode) {
+    if(isLightMode) {
+        document.body.classList.add('light-mode');
+    } else {
+        document.body.classList.remove('light-mode');
+    }
+    
+    // Synchroniser tous les boutons
+    themeSwitches.forEach(sw => {
+        sw.checked = isLightMode;
+    });
+    
+    // Sauvegarder dans localStorage
+    localStorage.setItem('theme', isLightMode ? 'light' : 'dark');
+}
+
+// Charger le thème sauvegardé au chargement de la page
+function loadSavedTheme() {
+    const savedTheme = localStorage.getItem('theme');
+    
+    // Si un thème est sauvegardé, l'appliquer
+    if(savedTheme) {
+        const isLightMode = savedTheme === 'light';
+        applyTheme(isLightMode);
+    } else {
+        // Sinon, utiliser le thème par défaut (dark)
+        applyTheme(false);
+    }
+}
+
+// Écouter les changements de thème
 themeSwitches.forEach(switchInput => {
     switchInput.addEventListener('change', (e) => {
-        // Synchroniser tous les boutons
-        themeSwitches.forEach(sw => {
-            sw.checked = e.target.checked;
-        });
-        
-        if(e.target.checked) {
-            document.body.classList.add('light-mode');
-        } else {
-            document.body.classList.remove('light-mode');
-        }
+        const isLightMode = e.target.checked;
+        applyTheme(isLightMode);
     });
 });
+
+// Charger le thème IMMÉDIATEMENT (avant DOMContentLoaded) pour éviter le flash
+// Cela doit être exécuté dans le <head> ou au début du <body>
+(function() {
+    const savedTheme = localStorage.getItem('theme');
+    if(savedTheme === 'light') {
+        document.documentElement.classList.add('light-mode');
+        document.body.classList.add('light-mode');
+    }
+})();
+
+// Charger le thème sauvegardé au chargement complet
+document.addEventListener('DOMContentLoaded', () => {
+    loadSavedTheme();
+});
+
+// Charger aussi immédiatement si le DOM est déjà chargé
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', loadSavedTheme);
+} else {
+    loadSavedTheme();
+}
 
 // Navigation
 const navbar = document.querySelector('.navbar');
@@ -102,7 +148,7 @@ window.addEventListener('scroll', () => {
 // Animation de texte typé
 const typedTextSpan = document.querySelector('.typed-text');
 const cursorBlinkSpan = document.querySelector('.cursor-blink');
-const textArray = ['Mohamed SARE', 'Développeur Full-Stack', 'Technicien Réseaux Cisco', 'Administrateur Systèmes Junior', 'Passionné d\'IA & Cybersécurité', 'Créateur de Projets Digitaux', 'Intégrateur WordPress & SEO'];
+const textArray = ['Mohamed SARE', 'Développeur Full-Stack', 'Administrateur Systèmes', 'Créateur de Projets Digitaux', 'Intégrateur WordPress & SEO'];
 const typingDelay = 200;
 const erasingDelay = 100;
 const newTextDelay = 2000;
@@ -110,6 +156,7 @@ let textArrayIndex = 0;
 let charIndex = 0;
 
 function type() {
+    if (!typedTextSpan) return; // Vérifier que l'élément existe
     if(charIndex < textArray[textArrayIndex].length) {
         typedTextSpan.textContent += textArray[textArrayIndex].charAt(charIndex);
         charIndex++;
@@ -120,6 +167,7 @@ function type() {
 }
 
 function erase() {
+    if (!typedTextSpan) return; // Vérifier que l'élément existe
     if(charIndex > 0) {
         typedTextSpan.textContent = textArray[textArrayIndex].substring(0, charIndex - 1);
         charIndex--;
@@ -131,36 +179,160 @@ function erase() {
     }
 }
 
-// Démarrer l'animation
+// Démarrer l'animation (seulement si l'élément existe)
 document.addEventListener('DOMContentLoaded', () => {
-    setTimeout(type, newTextDelay + 250);
+    if (typedTextSpan) {
+        setTimeout(type, newTextDelay + 250);
+    }
 });
 
-// Animation au scroll
-const animateOnScroll = () => {
-    const elements = document.querySelectorAll('.timeline-item, .skill-bar, .circle-progress, .section-title, .about-img, .about-text, .skill-category');
+// Système d'animations au scroll moderne et performant
+const scrollAnimations = {
+    // Configuration
+    threshold: 0.1,
+    rootMargin: '0px 0px -100px 0px',
     
-    elements.forEach(element => {
-        const elementPosition = element.getBoundingClientRect().top;
-        const screenPosition = window.innerHeight / 1.3;
+    // Observer pour les animations
+    observer: null,
+    
+    // Initialiser
+    init() {
+        // Créer l'Intersection Observer pour de meilleures performances
+        this.observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const element = entry.target;
+                    const animationType = element.dataset.animation || 'fade-up';
+                    const delay = parseInt(element.dataset.delay) || 0;
+                    
+                    setTimeout(() => {
+                        element.classList.add('animate-in');
+                        this.triggerCustomAnimations(element);
+                    }, delay);
+                    
+                    // Ne plus observer cet élément une fois animé
+                    this.observer.unobserve(element);
+                }
+            });
+        }, {
+            threshold: this.threshold,
+            rootMargin: this.rootMargin
+        });
         
-        if(elementPosition < screenPosition) {
-            element.classList.add('show');
+        // Observer tous les éléments avec data-animation
+        this.observeElements();
+        
+        // Animer les éléments existants au chargement
+        this.animateOnLoad();
+    },
+    
+    // Observer les éléments
+    observeElements() {
+        // Sélecteurs pour les animations automatiques
+        const selectors = [
+            '.section-title',
+            '.about-text',
+            '.about-img',
+            '.project-card',
+            '.skill-category',
+            '.skill-item',
+            '.timeline-item',
+            '.article-card',
+            '.contact-info',
+            '.form-group',
+            '.hero-description',
+            '.hero-title',
+            'h1', 'h2', 'h3',
+            '.card',
+            '.info-item',
+            'section > div',
+            '.article-body > *'
+        ];
+        
+        selectors.forEach(selector => {
+            document.querySelectorAll(selector).forEach(el => {
+                // Ajouter data-animation si pas déjà présent
+                if (!el.dataset.animation && !el.closest('.no-scroll-animate')) {
+                    // Déterminer le type d'animation selon le contexte
+                    if (el.classList.contains('section-title') || el.tagName.match(/^H[1-6]$/)) {
+                        el.dataset.animation = 'fade-up';
+                    } else if (el.classList.contains('project-card') || el.classList.contains('article-card')) {
+                        el.dataset.animation = 'fade-scale';
+                    } else if (el.classList.contains('about-img') || el.querySelector('img')) {
+                        el.dataset.animation = 'fade-right';
+                    } else {
+                        el.dataset.animation = 'fade-up';
+                    }
+                    
+                    // Ajouter un délai progressif pour les éléments dans une liste
+                    const parent = el.parentElement;
+                    if (parent && parent.children.length > 1) {
+                        const index = Array.from(parent.children).indexOf(el);
+                        el.dataset.delay = index * 50; // 50ms entre chaque élément
+                    }
+                }
+                
+                this.observer.observe(el);
+            });
+        });
+    },
+    
+    // Animer au chargement
+    animateOnLoad() {
+        const elements = document.querySelectorAll('.timeline-item, .skill-bar, .circle-progress');
+        
+        elements.forEach(element => {
+            const elementPosition = element.getBoundingClientRect().top;
+            const screenPosition = window.innerHeight / 1.3;
             
-            // Animer les barres de compétences
-            if(element.classList.contains('skill-bar')) {
-                const progressBar = element.querySelector('.progress-bar');
+            if(elementPosition < screenPosition) {
+                element.classList.add('show');
+                
+                // Animer les barres de compétences
+                if(element.classList.contains('skill-bar')) {
+                    const progressBar = element.querySelector('.progress-bar');
+                    if (progressBar) {
+                        const width = progressBar.getAttribute('data-width');
+                        progressBar.style.setProperty('--progress-width', '0%');
+                        setTimeout(() => {
+                            progressBar.style.setProperty('--progress-width', width + '%');
+                        }, 200);
+                    }
+                }
+                
+                // Animer les cercles de compétences
+                if(element.classList.contains('circle-progress')) {
+                    const circleFill = element.querySelector('.circle-fill');
+                    if (circleFill) {
+                        const value = element.getAttribute('data-value');
+                        circleFill.style.strokeDasharray = '0, 100';
+                        setTimeout(() => {
+                            circleFill.style.strokeDasharray = value + ', 100';
+                        }, 200);
+                    }
+                }
+            }
+        });
+    },
+    
+    // Déclencher les animations personnalisées
+    triggerCustomAnimations(element) {
+        // Barres de compétences
+        if(element.classList.contains('skill-bar')) {
+            const progressBar = element.querySelector('.progress-bar');
+            if (progressBar) {
                 const width = progressBar.getAttribute('data-width');
-                // Utiliser une variable CSS pour contrôler la largeur du pseudo-element :after
                 progressBar.style.setProperty('--progress-width', '0%');
                 setTimeout(() => {
                     progressBar.style.setProperty('--progress-width', width + '%');
                 }, 200);
             }
-            
-            // Animer les cercles de compétences
-            if(element.classList.contains('circle-progress')) {
-                const circleFill = element.querySelector('.circle-fill');
+        }
+        
+        // Cercles de compétences
+        if(element.classList.contains('circle-progress')) {
+            const circleFill = element.querySelector('.circle-fill');
+            if (circleFill) {
                 const value = element.getAttribute('data-value');
                 circleFill.style.strokeDasharray = '0, 100';
                 setTimeout(() => {
@@ -168,7 +340,17 @@ const animateOnScroll = () => {
                 }, 200);
             }
         }
-    });
+    }
+};
+
+// Initialiser les animations au scroll
+window.addEventListener('DOMContentLoaded', () => {
+    scrollAnimations.init();
+});
+
+// Animation au scroll pour compatibilité avec l'ancien code
+const animateOnScroll = () => {
+    scrollAnimations.animateOnLoad();
 };
 
 window.addEventListener('scroll', animateOnScroll);
@@ -213,26 +395,41 @@ const dots = document.querySelectorAll('.dot');
 let currentSlide = 0;
 
 function showSlide(n) {
+    // Vérifier que les éléments existent
+    if (!quoteSlides || quoteSlides.length === 0) return;
+    
     quoteSlides.forEach(slide => slide.classList.remove('active'));
-    dots.forEach(dot => dot.classList.remove('active'));
+    if (dots && dots.length > 0) {
+        dots.forEach(dot => dot.classList.remove('active'));
+    }
     
     currentSlide = (n + quoteSlides.length) % quoteSlides.length;
-    quoteSlides[currentSlide].classList.add('active');
-    dots[currentSlide].classList.add('active');
+    if (quoteSlides[currentSlide]) {
+        quoteSlides[currentSlide].classList.add('active');
+    }
+    if (dots && dots[currentSlide]) {
+        dots[currentSlide].classList.add('active');
+    }
 }
 
 function nextSlide() {
-    showSlide(currentSlide + 1);
+    if (quoteSlides && quoteSlides.length > 0) {
+        showSlide(currentSlide + 1);
+    }
 }
 
-dots.forEach((dot, index) => {
-    dot.addEventListener('click', () => {
-        showSlide(index);
+if (dots && dots.length > 0) {
+    dots.forEach((dot, index) => {
+        dot.addEventListener('click', () => {
+            showSlide(index);
+        });
     });
-});
+}
 
-// Rotation automatique des citations
-setInterval(nextSlide, 5000);
+// Rotation automatique des citations (seulement si les slides existent)
+if (quoteSlides && quoteSlides.length > 0) {
+    setInterval(nextSlide, 5000);
+}
 
 // Formulaire de contact
 const form = document.getElementById('form');

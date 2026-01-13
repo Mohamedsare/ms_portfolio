@@ -10,17 +10,30 @@
     --success-color: #28a745;
     --error-color: #dc3545;
     --transition: all 0.3s ease;
+    
+    /* Variables pour les thèmes (surchargées dans theme-styles.css) */
+    --bg-primary: #1a1a2e;
+    --bg-secondary: #16213e;
+    --bg-card: #0f1419;
+    --bg-hover: #1e2742;
+    --text-primary: #f1f1f1;
+    --text-secondary: #b8b8b8;
+    --text-muted: #888;
+    --border-color: rgba(255, 255, 255, 0.1);
+    --shadow-color: rgba(0, 0, 0, 0.3);
+    --shadow-hover: rgba(108, 99, 255, 0.3);
 }
 
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
 }
 
 html {
     scroll-behavior: smooth;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
 }
 
 body {
@@ -28,11 +41,24 @@ body {
     color: var(--light-color);
     overflow-x: hidden;
     transition: var(--transition);
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
 }
 
 body.light-mode {
     background-color: var(--lighter-color);
     color: #000000 !important;
+}
+
+/* Appliquer Inter partout sur le site */
+*, *::before, *::after {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif !important;
+}
+
+/* Exception : garder les polices monospace pour le code */
+code, pre, kbd, samp, 
+.article-body code:not([class*="language-"]),
+.article-body pre code:not([class*="language-"]) {
+    font-family: 'Consolas', 'Monaco', 'Courier New', monospace !important;
 }
 
 /* Loader */
@@ -117,6 +143,53 @@ body.light-mode {
 .theme-switch-label {
     margin: 0 3px;
     font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    color: var(--light-color);
+}
+
+.theme-switch-label svg {
+    width: 20px;
+    height: 20px;
+    transition: all 0.3s ease;
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
+}
+
+.theme-switch-label.moon-icon svg {
+    color: #6c63ff;
+    animation: moonGlow 3s ease-in-out infinite;
+}
+
+.theme-switch-label.sun-icon svg {
+    color: #ffd700;
+    animation: sunRotate 20s linear infinite;
+}
+
+@keyframes moonGlow {
+    0%, 100% {
+        filter: drop-shadow(0 0 5px rgba(108, 99, 255, 0.5));
+        transform: scale(1);
+    }
+    50% {
+        filter: drop-shadow(0 0 15px rgba(108, 99, 255, 0.8));
+        transform: scale(1.05);
+    }
+}
+
+@keyframes sunRotate {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.theme-switch-label:hover svg {
+    transform: scale(1.15);
 }
 
 .theme-switch {
@@ -296,6 +369,8 @@ input:checked + .slider:before {
 .navbar-menu {
     display: flex;
     list-style: none;
+    justify-content: center;
+    align-items: center;
 }
 
 .navbar-item {
@@ -330,17 +405,52 @@ input:checked + .slider:before {
     color: var(--primary-color);
 }
 
-/* Bouton CV dans la navigation */
+/* Bouton CV dans la navigation - Design ultra moderne */
 .cv-download-btn {
-    background-color: var(--primary-color);
+    position: relative;
+    background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
     color: var(--light-color) !important;
-    padding: 8px 16px;
-    border-radius: 25px;
-    font-weight: 600;
+    padding: 10px 20px;
+    border-radius: 30px;
+    font-weight: 700;
+    font-size: 0.95rem;
     display: inline-flex;
     align-items: center;
-    gap: 6px;
-    transition: var(--transition);
+    gap: 8px;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    border: 2px solid transparent;
+    box-shadow: 0 4px 15px rgba(108, 99, 255, 0.3),
+                0 0 20px rgba(108, 99, 255, 0.1) inset;
+    overflow: hidden;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    z-index: 1;
+}
+
+/* Effet de brillance animée */
+.cv-download-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, 
+        transparent, 
+        rgba(255, 255, 255, 0.3), 
+        transparent);
+    transition: left 0.5s ease;
+    z-index: 0;
+}
+
+.cv-download-btn:hover::before {
+    left: 100%;
+}
+
+/* Contenu du bouton au-dessus de l'effet */
+.cv-download-btn > * {
+    position: relative;
+    z-index: 1;
 }
 
 .cv-download-btn:after {
@@ -348,14 +458,55 @@ input:checked + .slider:before {
 }
 
 .cv-download-btn:hover {
-    background-color: var(--secondary-color);
+    background: linear-gradient(135deg, var(--secondary-color) 0%, var(--primary-color) 100%);
     color: var(--light-color) !important;
-    transform: translateY(-2px);
-    box-shadow: 0 5px 15px rgba(108, 99, 255, 0.4);
+    transform: translateY(-3px) scale(1.05);
+    box-shadow: 0 8px 25px rgba(108, 99, 255, 0.5),
+                0 0 30px rgba(108, 99, 255, 0.3) inset,
+                0 0 40px rgba(108, 99, 255, 0.2);
+    border-color: rgba(255, 255, 255, 0.3);
 }
 
+.cv-download-btn:active {
+    transform: translateY(-1px) scale(1.02);
+    box-shadow: 0 4px 15px rgba(108, 99, 255, 0.4);
+}
+
+/* Animation de l'icône */
 .cv-download-btn i {
-    font-size: 0.9rem;
+    font-size: 1rem;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    display: inline-block;
+}
+
+.cv-download-btn:hover i {
+    transform: translateY(-2px) rotate(360deg);
+    animation: bounceIcon 0.6s ease;
+}
+
+@keyframes bounceIcon {
+    0%, 100% {
+        transform: translateY(0) rotate(0deg);
+    }
+    50% {
+        transform: translateY(-4px) rotate(180deg);
+    }
+}
+
+/* Effet de pulsation subtile */
+@keyframes pulseGlow {
+    0%, 100% {
+        box-shadow: 0 4px 15px rgba(108, 99, 255, 0.3),
+                    0 0 20px rgba(108, 99, 255, 0.1) inset;
+    }
+    50% {
+        box-shadow: 0 4px 20px rgba(108, 99, 255, 0.5),
+                    0 0 30px rgba(108, 99, 255, 0.2) inset;
+    }
+}
+
+.cv-download-btn {
+    animation: pulseGlow 3s ease-in-out infinite;
 }
 
 .navbar-toggle {
@@ -368,8 +519,25 @@ input:checked + .slider:before {
     width: 25px;
     height: 3px;
     margin: 5px auto;
-    background-color: var(--light-color);
+    background-color: var(--text-primary);
     transition: var(--transition);
+}
+
+/* Menu burger adaptatif au thème */
+.navbar-toggle {
+    transition: all 0.3s ease;
+}
+
+.navbar-toggle:hover .bar {
+    background-color: var(--primary-color);
+}
+
+body.light-mode .bar {
+    background-color: var(--text-primary);
+}
+
+body.light-mode .navbar-toggle:hover .bar {
+    background-color: var(--primary-color);
 }
 
 .navbar.scrolled {

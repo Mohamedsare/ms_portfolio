@@ -36,10 +36,10 @@ class ArticleAdmin(admin.ModelAdmin):
     def status_badge(self, obj):
         """Affiche un badge de statut coloré"""
         if obj.is_published:
-            return format_html(
+            return mark_safe(
                 '<span class="status-badge published">✓ Publié</span>'
             )
-        return format_html(
+        return mark_safe(
             '<span class="status-badge draft">✗ Brouillon</span>'
         )
     status_badge.short_description = "Statut"
@@ -110,7 +110,7 @@ class ProjectAdmin(admin.ModelAdmin):
     def featured_badge(self, obj):
         """Affiche un badge pour les projets mis en avant"""
         if obj.featured:
-            return format_html(
+            return mark_safe(
                 '<span class="status-badge" style="background: #ffc107; color: #000; padding: 4px 10px; border-radius: 12px; font-size: 0.85rem; font-weight: 600;">⭐ Mis en avant</span>'
             )
         return "-"
@@ -232,10 +232,10 @@ class SkillCategoryAdmin(admin.ModelAdmin):
     def status_badge(self, obj):
         """Affiche un badge de statut"""
         if obj.is_active:
-            return format_html(
+            return mark_safe(
                 '<span class="status-badge active">✓ Actif</span>'
             )
-        return format_html(
+        return mark_safe(
             '<span class="status-badge inactive">✗ Inactif</span>'
         )
     status_badge.short_description = "Statut"
@@ -290,10 +290,10 @@ class SkillAdmin(admin.ModelAdmin):
     def status_badge(self, obj):
         """Affiche un badge de statut"""
         if obj.is_active:
-            return format_html(
+            return mark_safe(
                 '<span class="status-badge active">✓ Actif</span>'
             )
-        return format_html(
+        return mark_safe(
             '<span class="status-badge inactive">✗ Inactif</span>'
         )
     status_badge.short_description = "Statut"
@@ -326,10 +326,10 @@ class CVAdmin(admin.ModelAdmin):
     def status_badge(self, obj):
         """Affiche un badge de statut"""
         if obj.is_active:
-            return format_html(
+            return mark_safe(
                 '<span class="status-badge active">✓ Actif</span>'
             )
-        return format_html(
+        return mark_safe(
             '<span class="status-badge inactive">✗ Inactif</span>'
         )
     status_badge.short_description = "Statut"

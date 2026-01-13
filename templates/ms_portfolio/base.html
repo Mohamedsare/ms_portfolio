@@ -37,18 +37,26 @@
     <meta name="twitter:description" content="{% block twitter_description %}{{ meta_description|default:"Portfolio officiel de Mohamed SARE — Développeur Web, Python/Django, Intelligence Artificielle et Cybersécurité. Basé au Burkina Faso et au Maroc." }}{% endblock %}">
     <meta name="twitter:image" content="{% block twitter_image %}{% if og_image %}{{ og_image }}{% else %}{% absolute_static 'img/mhd.jpeg' %}{% endif %}{% endblock %}">
     
-    <!-- Favicon -->
-    <link rel="icon" type="image/x-icon" href="{% static 'img/favicon.ico' %}">
+    <!-- Favicon - Design moderne MS -->
+    <link rel="icon" type="image/svg+xml" href="{% static 'img/favicon.svg' %}">
+    <link rel="shortcut icon" type="image/x-icon" href="{% static 'img/favicon.ico' %}">
+    <link rel="manifest" href="{% static 'img/site.webmanifest' %}">
+    <meta name="theme-color" content="#6c63ff">
     
     <!-- CSS -->
     <link rel="stylesheet" href="{% static 'css/styles.css' %}">
     <link rel="stylesheet" href="{% static 'css/additional-styles.css' %}">
+    <link rel="stylesheet" href="{% static 'css/scroll-animations.css' %}">
+    <link rel="stylesheet" href="{% static 'css/theme-styles.css' %}">
     
     <!-- Font Awesome pour les icônes -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Prism.js pour la coloration syntaxique -->
+    {% block extra_css %}{% endblock %}
     
     <!-- Schema.org Structured Data -->
     <script type="application/ld+json">
@@ -91,6 +99,19 @@
         }
     }
     </script>
+    
+    <!-- Script pour charger le thème immédiatement (évite le flash) -->
+    <script>
+        (function() {
+            const savedTheme = localStorage.getItem('theme');
+            if(savedTheme === 'light') {
+                document.documentElement.classList.add('light-mode');
+                if(document.body) {
+                    document.body.classList.add('light-mode');
+                }
+            }
+        })();
+    </script>
 </head>
 <body>
     <!-- Loader -->
@@ -124,23 +145,55 @@
                 
                 <!-- Bouton mode sombre/clair - Position desktop (à côté du logo) -->
                 <div class="theme-switch-wrapper desktop-position logo-theme-switch">
-                    <label class="theme-switch-label">🌙</label>
+                    <label class="theme-switch-label moon-icon">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                        </svg>
+                    </label>
                     <label class="theme-switch">
                         <input type="checkbox">
                         <span class="slider"></span>
                     </label>
-                    <label class="theme-switch-label">☀️</label>
+                    <label class="theme-switch-label sun-icon">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="5"></circle>
+                            <line x1="12" y1="1" x2="12" y2="3"></line>
+                            <line x1="12" y1="21" x2="12" y2="23"></line>
+                            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                            <line x1="1" y1="12" x2="3" y2="12"></line>
+                            <line x1="21" y1="12" x2="23" y2="12"></line>
+                            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                        </svg>
+                    </label>
                 </div>
             </div>
             
             <!-- Bouton mode sombre/clair - Position mobile (entre MS et menu) -->
             <div class="theme-switch-wrapper mobile-position">
-                <label class="theme-switch-label">🌙</label>
+                <label class="theme-switch-label moon-icon">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                </label>
                 <label class="theme-switch">
                     <input type="checkbox">
                     <span class="slider"></span>
                 </label>
-                <label class="theme-switch-label">☀️</label>
+                <label class="theme-switch-label sun-icon">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </label>
             </div>
             
             <ul class="navbar-menu">
@@ -184,7 +237,10 @@
         <div class="footer-container">
             <div class="footer-logo">
                 <a href="{% url 'home' %}">Mohamed SARE</a>
-                <p>Je suis Full-Stack, Networker, Designer junior. Étudiant en DUT Génie Informatique, je combine compétences en développement, administration réseau et design numérique pour créer des solutions performantes et adaptables. Passionné par l’innovation et la technologie, je m’adapte facilement à différents profils de projets et je cherche toujours à apporter valeur et efficacité dans chaque challenge.</p>
+                <p>Je suis développeur Full-Stack et Administateur Systèmes et Réseaux, actuellement étudiant en Génie Informatique. Je combine le développement logiciel, l’administration des systèmes et réseaux, ainsi que le design numérique pour concevoir des solutions technologiques fiables, performantes et évolutives.
+
+                    Orienté innovation et excellence technique, je m’adapte rapidement à des environnements variés et à des projets complexes, avec pour objectif constant de créer de la valeur, d’optimiser les performances et de livrer des produits numériques de niveau professionnel.
+                    </p>
             </div>
             <div class="footer-links">
                 <h3>Liens rapides</h3>
@@ -218,5 +274,8 @@
 
     <!-- JavaScript -->
     <script src="{% static 'js/main.js' %}"></script>
+    
+    <!-- Prism.js pour la coloration syntaxique -->
+    {% block extra_js %}{% endblock %}
 </body>
 </html>

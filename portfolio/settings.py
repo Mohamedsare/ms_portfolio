@@ -63,7 +63,7 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'portfolio.wsgi.application'
-
+"""
 # --- DATABASE (PostgreSQL via Render) ---
 DATABASES = {
     'default': {
@@ -75,7 +75,13 @@ DATABASES = {
         'PORT': '5432',
     }
 }
+"""
 
+DATABASES = {
+    "default": dj_database_url.config(
+        default=config("DATABASE_URL")
+    )
+}
 
 # --- PASSWORD VALIDATION ---
 AUTH_PASSWORD_VALIDATORS = [

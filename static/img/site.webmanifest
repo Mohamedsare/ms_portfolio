@@ -1,0 +1,18 @@
+{
+    "name": "Portfolio Mohamed SARE",
+    "short_name": "MS Portfolio",
+    "description": "Portfolio de Mohamed SARE - Développeur Web Python/Django, IA et Cybersécurité",
+    "icons": [
+        {
+            "src": "/static/img/favicon.svg",
+            "sizes": "any",
+            "type": "image/svg+xml",
+            "purpose": "any maskable"
+        }
+    ],
+    "theme_color": "#6c63ff",
+    "background_color": "#1a1a2e",
+    "display": "standalone",
+    "start_url": "/",
+    "scope": "/"
+}

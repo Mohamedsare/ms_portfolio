@@ -1,0 +1,160 @@
+/* Animations au scroll modernes et performantes */
+
+/* Classes de base pour les animations */
+[data-animation] {
+    opacity: 0;
+    transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+}
+
+[data-animation].animate-in {
+    opacity: 1;
+}
+
+/* Fade Up */
+[data-animation="fade-up"] {
+    transform: translateY(30px);
+}
+
+[data-animation="fade-up"].animate-in {
+    transform: translateY(0);
+}
+
+/* Fade Down */
+[data-animation="fade-down"] {
+    transform: translateY(-30px);
+}
+
+[data-animation="fade-down"].animate-in {
+    transform: translateY(0);
+}
+
+/* Fade Left */
+[data-animation="fade-left"] {
+    transform: translateX(30px);
+}
+
+[data-animation="fade-left"].animate-in {
+    transform: translateX(0);
+}
+
+/* Fade Right */
+[data-animation="fade-right"] {
+    transform: translateX(-30px);
+}
+
+[data-animation="fade-right"].animate-in {
+    transform: translateX(0);
+}
+
+/* Fade Scale */
+[data-animation="fade-scale"] {
+    transform: scale(0.9);
+}
+
+[data-animation="fade-scale"].animate-in {
+    transform: scale(1);
+}
+
+/* Fade Rotate */
+[data-animation="fade-rotate"] {
+    transform: rotate(-5deg) scale(0.95);
+}
+
+[data-animation="fade-rotate"].animate-in {
+    transform: rotate(0deg) scale(1);
+}
+
+/* Slide Up avec bounce */
+[data-animation="slide-up-bounce"] {
+    transform: translateY(50px);
+    transition: opacity 0.6s ease-out, transform 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+[data-animation="slide-up-bounce"].animate-in {
+    transform: translateY(0);
+}
+
+/* Zoom In */
+[data-animation="zoom-in"] {
+    transform: scale(0.8);
+    transition: opacity 0.6s ease-out, transform 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+[data-animation="zoom-in"].animate-in {
+    transform: scale(1);
+}
+
+/* Flip */
+[data-animation="flip"] {
+    transform: perspective(1000px) rotateY(-90deg);
+    transform-style: preserve-3d;
+    transition: opacity 0.6s ease-out, transform 0.8s ease-out;
+}
+
+[data-animation="flip"].animate-in {
+    transform: perspective(1000px) rotateY(0deg);
+}
+
+/* Parallax léger pour les sections */
+.parallax-section {
+    transition: transform 0.1s ease-out;
+}
+
+/* Animation pour les images */
+img[data-animation] {
+    will-change: transform, opacity;
+}
+
+/* Animation pour les cartes */
+.project-card[data-animation],
+.article-card[data-animation] {
+    transition: opacity 0.6s ease-out, transform 0.6s ease-out, box-shadow 0.3s ease-out;
+}
+
+.project-card[data-animation].animate-in:hover,
+.article-card[data-animation].animate-in:hover {
+    transform: translateY(-5px) scale(1.02);
+    box-shadow: 0 10px 30px rgba(108, 99, 255, 0.3);
+}
+
+/* Animation pour les titres */
+h1[data-animation],
+h2[data-animation],
+h3[data-animation],
+.section-title[data-animation] {
+    transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+}
+
+/* Animation pour les textes */
+p[data-animation],
+.about-text[data-animation] {
+    transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+}
+
+/* Désactiver les animations sur mobile pour de meilleures performances */
+@media (max-width: 768px) {
+    [data-animation] {
+        opacity: 1 !important;
+        transform: none !important;
+        transition: none !important;
+    }
+    
+    [data-animation].animate-in {
+        opacity: 1 !important;
+        transform: none !important;
+    }
+}
+
+/* Réduction de mouvement pour l'accessibilité */
+@media (prefers-reduced-motion: reduce) {
+    [data-animation] {
+        opacity: 1 !important;
+        transform: none !important;
+        transition: none !important;
+    }
+    
+    [data-animation].animate-in {
+        opacity: 1 !important;
+        transform: none !important;
+    }
+}

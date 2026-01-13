@@ -1,5 +1,106 @@
 {% extends 'ms_portfolio/base.html' %}
 {% load article_filters %}
+{% load static %}
+
+{% block extra_css %}
+<!-- Prism.js CSS - Thème personnalisé -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet" />
+<link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/line-numbers/prism-line-numbers.min.css" rel="stylesheet" />
+<link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/toolbar/prism-toolbar.min.css" rel="stylesheet" />
+<!-- Alternative: Si le thème tomorrow ne fonctionne pas, décommentez cette ligne -->
+<!-- <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" rel="stylesheet" /> -->
+<style>
+    /* Styles personnalisés pour Prism.js - IMPORTANT: Priorité élevée */
+    .article-body pre[class*="language-"] {
+        background: #1e1e1e !important;
+        border-radius: 8px;
+        padding: 1.5em;
+        margin: 1.5em 0;
+        overflow-x: auto;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        border: 1px solid #333;
+    }
+    
+    /* CRITIQUE: Surcharger les styles généraux qui forcent la couleur */
+    /* Ces règles doivent être plus spécifiques que celles dans additional-styles.css */
+    .article-body pre[class*="language-"] code,
+    .article-body pre[class*="language-"] code[class*="language-"],
+    .article-body pre.line-numbers code[class*="language-"] {
+        /* Ne PAS forcer la couleur - laisser Prism.js gérer via les tokens */
+        color: unset !important;
+        background: transparent !important;
+        border: none !important;
+        padding: 0 !important;
+        font-family: 'Consolas', 'Monaco', 'Courier New', monospace !important;
+        font-size: 0.9em;
+        line-height: 1.6;
+    }
+    
+    /* S'assurer que les tokens Prism.js peuvent appliquer leurs couleurs */
+    /* Les tokens ont leurs propres classes et couleurs définies par le thème Prism.js */
+    
+    /* Forcer la réinitialisation pour que Prism.js puisse appliquer ses styles */
+    .article-body pre[class*="language-"] code[class*="language-"] * {
+        color: inherit;
+    }
+    
+    /* Style pour les blocs de code inline */
+    .article-body code:not([class*="language-"]) {
+        background: #f4f4f4;
+        padding: 0.2em 0.4em;
+        border-radius: 4px;
+        font-size: 0.9em;
+        color: #e83e8c;
+        font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+    }
+    
+    /* Mode sombre pour les codes inline */
+    body.dark-mode .article-body code:not([class*="language-"]) {
+        background: #2d2d2d;
+        color: #f92672;
+    }
+    
+    /* Style pour les numéros de ligne */
+    .article-body pre.line-numbers {
+        position: relative;
+        padding-left: 3.8em;
+        counter-reset: linenumber;
+    }
+    
+    .article-body pre.line-numbers > code {
+        position: relative;
+        white-space: inherit;
+    }
+    
+    /* Copier le code - bouton */
+    .article-body pre[class*="language-"] {
+        position: relative;
+    }
+    
+    /* Responsive - Mobile First */
+    .article-body pre[class*="language-"] {
+        padding: 1em;
+        font-size: 0.8em;
+        margin: 15px 0;
+    }
+    
+    @media screen and (min-width: 481px) {
+        .article-body pre[class*="language-"] {
+            padding: 1.2em;
+            font-size: 0.85em;
+            margin: 18px 0;
+        }
+    }
+    
+    @media screen and (min-width: 769px) {
+        .article-body pre[class*="language-"] {
+            padding: 1.5em;
+            font-size: 0.9em;
+            margin: 20px 0;
+        }
+    }
+</style>
+{% endblock %}
 
 {% block content %}
 <!-- Article détaillé -->
@@ -99,4 +200,127 @@
         </div>
     </div>
 </section>
+
+{% block extra_js %}
+<!-- Prism.js Core (doit être chargé en premier) -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+<!-- Prism.js Languages - Ordre important -->
+<!-- Dépendances de base (doivent être chargées en premier) -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-markup.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-clike.min.js"></script>
+<!-- Langages principaux -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-javascript.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-jsx.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-typescript.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-java.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-c.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-cpp.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-csharp.min.js"></script>
+<!-- PHP nécessite markup et clike - charger après les dépendances -->
+<!-- Si vous n'utilisez pas PHP dans vos articles, vous pouvez commenter cette ligne -->
+<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-php.min.js"></script> -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-ruby.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-go.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-rust.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-sql.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-bash.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-json.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-yaml.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-markdown.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-html.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-css.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-scss.min.js"></script>
+<!-- Django template syntax - nécessite markup et clike chargés avant -->
+<!-- Si vous n'utilisez pas de templates Django dans vos articles, vous pouvez commenter cette ligne -->
+<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-django.min.js"></script> -->
+<!-- Prism.js Plugins -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/line-numbers/prism-line-numbers.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/toolbar/prism-toolbar.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/copy-to-clipboard/prism-copy-to-clipboard.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/show-language/prism-show-language.min.js"></script>
+<!-- Initialiser Prism.js -->
+<script>
+    // Fonction pour initialiser Prism.js
+    function initPrism() {
+        if (typeof Prism === 'undefined') {
+            console.warn('Prism.js n\'est pas chargé');
+            return;
+        }
+        
+        // Sélectionner tous les blocs de code dans l'article
+        const articleBody = document.querySelector('.article-body');
+        if (!articleBody) {
+            console.warn('Article body non trouvé');
+            return;
+        }
+        
+        // Trouver tous les blocs <pre><code>
+        const codeBlocks = articleBody.querySelectorAll('pre code');
+        
+        codeBlocks.forEach(function(block) {
+            const pre = block.parentElement;
+            if (!pre || pre.tagName !== 'PRE') return;
+            
+            // Obtenir la classe de langue du <code>
+            const codeClasses = block.className.match(/language-[\w-]+/);
+            const langClass = codeClasses ? codeClasses[0] : 'language-text';
+            
+            // S'assurer que le <code> a bien la classe
+            if (!block.className.includes('language-')) {
+                block.className = block.className ? block.className + ' ' + langClass : langClass;
+            }
+            
+            // S'assurer que le <pre> a aussi la classe de langue et line-numbers
+            if (!pre.className.includes('language-')) {
+                pre.className = pre.className ? pre.className + ' line-numbers ' + langClass : 'line-numbers ' + langClass;
+            } else if (!pre.className.includes('line-numbers')) {
+                pre.className = pre.className + ' line-numbers';
+            }
+        });
+        
+        // Appliquer la coloration syntaxique sur tous les blocs avec gestion d'erreurs
+        try {
+            Prism.highlightAllUnder(articleBody);
+        } catch (e) {
+            console.warn('Erreur lors de highlightAllUnder:', e);
+        }
+        
+        // Réappliquer sur les blocs qui n'ont peut-être pas été traités
+        codeBlocks.forEach(function(block) {
+            try {
+                // Vérifier que le bloc n'est pas déjà traité
+                if (!block.classList.contains('language-none') || block.textContent.trim()) {
+                    Prism.highlightElement(block);
+                }
+            } catch (e) {
+                console.warn('Erreur lors de la coloration du bloc:', e, block);
+                // Continuer même en cas d'erreur
+            }
+        });
+        
+        // Vérifier que les tokens sont bien créés
+        const tokens = articleBody.querySelectorAll('.token');
+        if (tokens.length === 0) {
+            console.warn('Aucun token Prism.js trouvé - le thème peut ne pas être chargé');
+        } else {
+            console.log('Prism.js a créé', tokens.length, 'tokens');
+        }
+    }
+    
+    // Initialiser quand le DOM est prêt
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', function() {
+            // Attendre un peu pour que tous les scripts soient chargés
+            setTimeout(initPrism, 50);
+        });
+    } else {
+        // Le DOM est déjà chargé, attendre un peu pour les scripts
+        setTimeout(initPrism, 50);
+    }
+    
+    // Réinitialiser après un délai supplémentaire pour s'assurer que tout est chargé
+    setTimeout(initPrism, 200);
+</script>
+{% endblock %}
 {% endblock %}

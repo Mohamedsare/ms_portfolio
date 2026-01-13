@@ -92,6 +92,7 @@ def format_article_simple(content):
 def format_article_advanced(content):
     """
     Filtre avancé pour formater le contenu des articles avec tous les types de formatage
+    Utilise Prism.js pour la coloration syntaxique
     """
     if not content:
         return ""
@@ -99,11 +100,10 @@ def format_article_advanced(content):
     # Convertir le contenu en HTML avec Markdown complet
     md = markdown.Markdown(extensions=[
         'extra',           # Inclut toutes les extensions de base
-        'codehilite',      # Coloration syntaxique du code
+        'fenced_code',     # Blocs de code avec ``````
         'toc',            # Table des matières
         'sane_lists',     # Listes intelligentes
         'smarty',         # Guillemets intelligents
-        'fenced_code',    # Blocs de code avec ``````
         'tables',         # Support des tableaux
         'attr_list',      # Attributs HTML
         'def_list',       # Listes de définitions
@@ -114,6 +114,41 @@ def format_article_advanced(content):
     
     # Convertir le contenu
     html_content = md.convert(content)
+    
+    # Post-traitement pour Prism.js
+    # Convertir les blocs de code pour utiliser les classes Prism.js
+    # Format Markdown génère: <pre><code class="language-python">...</code></pre>
+    # Prism.js attend: <pre class="line-numbers language-python"><code class="language-python">...</code></pre>
+    
+    def process_code_blocks(match):
+        """Traite un bloc de code pour Prism.js"""
+        code_attrs = match.group(1)  # Attributs du <code>
+        code_content = match.group(2)  # Contenu du code
+        
+        # Extraire la classe de langue si elle existe dans les attributs
+        lang_match = re.search(r'class="language-([^"]+)"', code_attrs)
+        if lang_match:
+            lang = lang_match.group(1)
+            # Construire le nouveau bloc avec la classe de langue
+            return f'<pre class="line-numbers language-{lang}"><code class="language-{lang}">{code_content}</code></pre>'
+        else:
+            # Si pas de classe de langue, utiliser language-text
+            # Vérifier s'il y a d'autres attributs
+            if code_attrs.strip():
+                # Il y a des attributs mais pas de language-xxx, les remplacer
+                return f'<pre class="line-numbers language-text"><code class="language-text">{code_content}</code></pre>'
+            else:
+                # Pas d'attributs du tout
+                return f'<pre class="line-numbers language-text"><code class="language-text">{code_content}</code></pre>'
+    
+    # Traiter tous les blocs de code (format <pre><code>...</code></pre>)
+    # Utiliser un regex plus robuste qui capture même les cas avec des espaces
+    html_content = re.sub(
+        r'<pre>\s*<code([^>]*)>(.*?)</code>\s*</pre>',
+        process_code_blocks,
+        html_content,
+        flags=re.DOTALL
+    )
     
     # Post-traitement pour améliorer le rendu
     # Remplacer les listes Markdown par des listes HTML personnalisées
