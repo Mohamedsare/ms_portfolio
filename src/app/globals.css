@@ -36,6 +36,258 @@ main section[id] {
   overflow-y: visible;
 }
 
+/* Fond fixe + effet « révélation » au scroll (contenu glisse sur l’image) */
+.newsletter-section.newsletter-parallax {
+  position: relative;
+  isolation: isolate;
+  background-color: #06060c;
+  /* Calques du haut vers le bas : dégradés puis photo (photo en dernier = arrière-plan) */
+  background-image:
+    linear-gradient(
+      180deg,
+      rgba(4, 6, 18, 0.88) 0%,
+      rgba(4, 6, 18, 0.55) 42%,
+      rgba(4, 6, 18, 0.9) 100%
+    ),
+    radial-gradient(ellipse 100% 70% at 50% -30%, rgba(108, 99, 255, 0.35) 0%, transparent 55%),
+    radial-gradient(circle at 90% 20%, rgba(56, 189, 248, 0.14) 0%, transparent 42%),
+    url("https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=2400&q=80");
+  background-size: cover, cover, cover, cover;
+  background-position: center, center, center, center 35%;
+  background-repeat: no-repeat;
+  background-attachment: scroll, scroll, scroll, fixed;
+}
+
+.newsletter-section.newsletter-parallax::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.09;
+  background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M60 0H0v60' fill='none' stroke='%23ffffff' stroke-width='0.5'/%3E%3C/svg%3E");
+  background-size: 48px 48px;
+}
+
+/* iOS / petits écrans : fixed est souvent dégradé → fond qui défile avec la page */
+@media screen and (max-width: 896px) {
+  .newsletter-section.newsletter-parallax {
+    background-attachment: scroll;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .newsletter-section.newsletter-parallax {
+    background-attachment: scroll !important;
+  }
+}
+
+/* Bandeau CTA (avant footer) — même technique fond fixe / parallax que la newsletter */
+.cta-strip-section {
+  box-sizing: border-box;
+  overflow-x: clip;
+  overflow-y: visible;
+}
+
+.cta-strip-section.cta-strip-parallax {
+  position: relative;
+  isolation: isolate;
+  /* Aligné newsletter : base #06060c + halos brand + image IA / futuriste */
+  background-color: #06060c;
+  background-image:
+    linear-gradient(
+      180deg,
+      rgba(4, 6, 18, 0.93) 0%,
+      rgba(8, 10, 32, 0.68) 40%,
+      rgba(4, 6, 18, 0.94) 100%
+    ),
+    radial-gradient(ellipse 115% 78% at 50% -22%, rgba(108, 99, 255, 0.45) 0%, transparent 56%),
+    radial-gradient(circle at 88% 72%, rgba(56, 189, 248, 0.2) 0%, transparent 46%),
+    radial-gradient(circle at 8% 55%, rgba(77, 68, 219, 0.22) 0%, transparent 42%),
+    url("https://images.unsplash.com/photo-1677442136019-21780ecad995?auto=format&fit=crop&w=2400&q=85");
+  background-size: cover, cover, cover, cover, cover;
+  background-position: center, center, center, center, center 42%;
+  background-repeat: no-repeat;
+  background-attachment: scroll, scroll, scroll, scroll, fixed;
+}
+
+.cta-strip-section.cta-strip-parallax::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.1;
+  background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M60 0H0v60' fill='none' stroke='%236c63ff' stroke-width='0.35' opacity='0.5'/%3E%3C/svg%3E");
+  background-size: 48px 48px;
+}
+
+@media screen and (max-width: 896px) {
+  .cta-strip-section.cta-strip-parallax {
+    background-attachment: scroll;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cta-strip-section.cta-strip-parallax {
+    background-attachment: scroll !important;
+  }
+}
+
+.cta-strip-inner {
+  position: relative;
+  z-index: 1000;
+  width: 100%;
+}
+
+.cta-strip-card {
+  margin-left: auto;
+  margin-right: auto;
+  max-width: 42rem;
+  padding: 2rem 1.5rem 2.25rem;
+  border-radius: 1.5rem;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(8, 8, 22, 0.55);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  box-shadow:
+    0 28px 90px rgba(0, 0, 0, 0.5),
+    0 0 0 1px rgba(108, 99, 255, 0.14),
+    inset 0 1px 0 rgba(255, 255, 255, 0.06);
+}
+
+@media screen and (min-width: 640px) {
+  .cta-strip-card {
+    padding: 2.5rem 2.25rem 2.75rem;
+    border-radius: 1.75rem;
+    max-width: 46rem;
+  }
+}
+
+.cta-strip-section .cta-strip-eyebrow {
+  color: rgba(255, 255, 255, 0.72) !important;
+  letter-spacing: 0.18em;
+}
+
+.cta-strip-section .cta-strip-eyebrow-accent {
+  color: var(--primary-color) !important;
+}
+
+.cta-strip-section .cta-strip-title {
+  color: #fff !important;
+  text-shadow: 0 2px 32px rgba(0, 0, 0, 0.45);
+}
+
+.cta-strip-section .cta-strip-title-gradient {
+  background: linear-gradient(135deg, #fff 0%, rgba(200, 195, 255, 0.95) 55%, var(--primary-color) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent !important;
+  text-shadow: none;
+}
+
+.cta-strip-section .cta-strip-lead {
+  color: rgba(255, 255, 255, 0.82) !important;
+  text-shadow: 0 1px 20px rgba(0, 0, 0, 0.35);
+}
+
+.cta-btn {
+  text-decoration: none !important;
+  min-height: 3rem;
+  box-sizing: border-box;
+  transition:
+    filter 0.2s ease,
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.cta-btn:focus-visible {
+  outline: 2px solid rgba(108, 99, 255, 0.65);
+  outline-offset: 3px;
+}
+
+.cta-btn-chat {
+  background: var(--primary-color) !important;
+  color: #fff !important;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow:
+    0 8px 32px rgba(108, 99, 255, 0.42),
+    inset 0 1px 0 rgba(255, 255, 255, 0.12);
+}
+
+.cta-btn-chat:hover {
+  filter: brightness(1.06);
+  transform: translateY(-2px);
+}
+
+/* Bouton rond — icône officielle WhatsApp (brand) */
+.cta-btn-whatsapp {
+  flex-shrink: 0;
+  display: inline-flex !important;
+  align-items: center;
+  justify-content: center;
+  width: 3.5rem;
+  height: 3.5rem;
+  min-height: 3.5rem !important;
+  padding: 0 !important;
+  border-radius: 9999px !important;
+  background: #25d366 !important;
+  color: #fff !important;
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  box-shadow:
+    0 8px 28px rgba(37, 211, 102, 0.45),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+
+.cta-btn-whatsapp i {
+  font-size: 1.65rem;
+  line-height: 1;
+}
+
+.cta-btn-whatsapp:hover {
+  filter: brightness(1.08);
+  transform: translateY(-2px) scale(1.04);
+}
+
+.cta-strip-divider-gradient {
+  height: 1px;
+  width: 100%;
+  max-width: 28rem;
+  margin-left: auto;
+  margin-right: auto;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(108, 99, 255, 0.45) 22%,
+    rgba(255, 255, 255, 0.28) 50%,
+    rgba(108, 99, 255, 0.45) 78%,
+    transparent
+  );
+}
+
+.cta-strip-trust {
+  list-style: none;
+  padding: 0;
+  margin: 0 auto;
+}
+
+.cta-strip-trust li span:last-child {
+  color: rgba(255, 255, 255, 0.9) !important;
+}
+
+.cta-strip-trust-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.4rem 0.75rem;
+  border-radius: 9999px;
+  font-size: 0.8125rem;
+  line-height: 1.35;
+  border: 1px solid rgba(108, 99, 255, 0.22);
+  background: rgba(108, 99, 255, 0.08);
+  color: rgba(255, 255, 255, 0.92) !important;
+}
+
 .newsletter-section .newsletter-inner {
   margin-left: auto;
   margin-right: auto;

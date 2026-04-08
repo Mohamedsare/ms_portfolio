@@ -63,29 +63,8 @@ export function NewsletterSection() {
   return (
     <section
       id="newsletter"
-      className="newsletter-section no-scroll-animate relative isolate flex w-full flex-col items-center bg-[#06060c] px-4 py-16 md:py-24"
+      className="newsletter-section newsletter-parallax no-scroll-animate relative isolate flex w-full flex-col items-center px-4 py-16 md:min-h-[min(92vh,56rem)] md:py-28"
     >
-      <div
-        className="pointer-events-none absolute inset-0 opacity-[0.35]"
-        aria-hidden
-        style={{
-          backgroundImage: `
-            radial-gradient(circle at 20% 30%, rgba(108, 99, 255, 0.25) 0%, transparent 45%),
-            radial-gradient(circle at 80% 20%, rgba(56, 189, 248, 0.12) 0%, transparent 40%),
-            radial-gradient(circle at 50% 80%, rgba(108, 99, 255, 0.15) 0%, transparent 50%),
-            linear-gradient(180deg, transparent 0%, rgba(0,0,0,0.4) 100%)
-          `,
-        }}
-      />
-      <div
-        className="pointer-events-none absolute inset-0 opacity-[0.07]"
-        aria-hidden
-        style={{
-          backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M60 0H0v60' fill='none' stroke='%23fff' stroke-width='0.5'/%3E%3C/svg%3E")`,
-          backgroundSize: "48px 48px",
-        }}
-      />
-
       <div className="newsletter-inner w-full max-w-lg shrink-0">
         <div className="newsletter-card-panel shadow-[0_25px_80px_-12px_rgba(0,0,0,0.45)] ring-1 ring-zinc-200/80">
           <header className="newsletter-card-header">

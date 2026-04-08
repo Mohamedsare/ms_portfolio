@@ -2,6 +2,7 @@ import Link from "next/link";
 import { AboutSection } from "@/components/sections/about-section";
 import { ContactSection } from "@/components/sections/contact-section";
 import { ProjectsSection } from "@/components/sections/projects-section";
+import { CtaStripSection } from "@/components/sections/cta-strip-section";
 import { NewsletterSection } from "@/components/sections/newsletter-section";
 import { PricingSection } from "@/components/sections/pricing-section";
 import { ServicesSection } from "@/components/sections/services-section";
@@ -121,6 +122,8 @@ export default async function HomePage() {
       <NewsletterSection />
 
       <ContactSection />
+
+      <CtaStripSection />
     </>
   );
 }
