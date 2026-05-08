@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { notFound } from "next/navigation";
 import { headers } from "next/headers";
 import {
@@ -63,10 +64,13 @@ export default async function ArticlePage({ params }: Props) {
             <h1 className="article-title">{article.title}</h1>
             {article.image_url && (
               <div className="article-image">
-                <img
+                <Image
                   src={article.image_url}
                   alt={article.title}
+                  width={1600}
+                  height={900}
                   className="w-full h-auto"
+                  sizes="(max-width: 768px) 100vw, 800px"
                 />
               </div>
             )}
@@ -117,19 +121,19 @@ export default async function ArticlePage({ params }: Props) {
             <div className="articles-grid">
               {similar.map((sa) => (
                 <article key={sa.id} className="similar-article-card">
-                  {sa.image_url ? (
-                    <img
-                      src={sa.image_url}
+                  <div className="similar-article-media">
+                    <Image
+                      src={
+                        sa.image_url
+                          ? sa.image_url
+                          : `https://via.placeholder.com/600x400/6c63ff/ffffff?text=${encodeURIComponent(sa.title.slice(0, 20))}`
+                      }
                       alt={sa.title}
+                      fill
+                      sizes="(max-width: 768px) 100vw, 33vw"
                       className="similar-article-img"
                     />
-                  ) : (
-                    <img
-                      src={`https://via.placeholder.com/300x200/6c63ff/ffffff?text=${encodeURIComponent(sa.title.slice(0, 20))}`}
-                      alt={sa.title}
-                      className="similar-article-img"
-                    />
-                  )}
+                  </div>
                   <div className="similar-article-content">
                     <h4 className="similar-article-title">{sa.title}</h4>
                     <p className="similar-article-date">

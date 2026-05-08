@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { SITE_SOCIAL_LINKS } from "@/lib/social-links";
 
 export function Footer() {
@@ -5,7 +6,7 @@ export function Footer() {
     <footer className="footer site-footer">
       <div className="footer-container site-footer-main">
         <div className="footer-logo site-footer-brand">
-          <a href="/#accueil">Mohamed SARE</a>
+          <Link href="/#accueil">Mohamed SARE</Link>
           <p>
             Je suis développeur Full-Stack et Administateur Systèmes et Réseaux,
             actuellement étudiant en Génie Informatique. Je combine le
@@ -22,31 +23,31 @@ export function Footer() {
           <h3>Liens rapides</h3>
           <ul>
             <li>
-              <a href="/#accueil">Accueil</a>
+              <Link href="/#accueil">Accueil</Link>
             </li>
             <li>
-              <a href="/#apropos">À propos</a>
+              <Link href="/#apropos">À propos</Link>
             </li>
             <li>
-              <a href="/#projets">Projets</a>
+              <Link href="/#projets">Projets</Link>
             </li>
             <li>
-              <a href="/#competences">Compétences</a>
+              <Link href="/#competences">Compétences</Link>
             </li>
             <li>
-              <a href="/#services">Services</a>
+              <Link href="/#services">Services</Link>
             </li>
             <li>
-              <a href="/#tarifs">Tarifs</a>
+              <Link href="/#tarifs">Tarifs</Link>
             </li>
             <li>
-              <a href="/#newsletter">Newsletter</a>
+              <Link href="/#newsletter">Newsletter</Link>
             </li>
             <li>
-              <a href="/#contact">Contact</a>
+              <Link href="/#contact">Contact</Link>
             </li>
             <li>
-              <a href="/confidentialite">Confidentialité</a>
+              <Link href="/confidentialite">Confidentialité</Link>
             </li>
           </ul>
         </div>

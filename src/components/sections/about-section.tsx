@@ -1,6 +1,6 @@
-export function AboutSection() {
-  const year = new Date().getFullYear();
+import Image from "next/image";
 
+export function AboutSection() {
   return (
     <section id="apropos" className="about about-section">
       <div className="container">
@@ -17,10 +17,13 @@ export function AboutSection() {
             <div className="img-card">
               <div className="img-card-inner">
                 <div className="img-card-front">
-                  <img
+                  <Image
                     src="/img/mhd.jpeg"
                     alt="Mohamed SARE"
-                    loading="lazy"
+                    width={900}
+                    height={1200}
+                    className="h-full w-full object-cover"
+                    priority={false}
                   />
                 </div>
                 <div className="img-card-back">
@@ -67,38 +70,27 @@ export function AboutSection() {
           </div>
         </div>
 
-        <div className="timeline about-timeline-card">
-          <h3>
-            Mon <span>Parcours</span>
-          </h3>
-          <div className="timeline-container">
-            <div className="timeline-item">
-              <div className="timeline-content">
-                <h4>{year} - Présent</h4>
-                <p>
-                  Étudiant en Génie Informatique à l&apos;École Supérieure de
-                  Technologie de Casablanca (Morocco)
-                </p>
-              </div>
-            </div>
-            <div className="timeline-item">
-              <div className="timeline-content">
-                <h4>2022 - 2023</h4>
-                <p>
-                  Baccalauréat Scientifique au Lycée Privé Marie Véronique de
-                  Ouagadougou (Burkina Faso)
-                </p>
-              </div>
-            </div>
-            <div className="timeline-item">
-              <div className="timeline-content">
-                <h4>2020 - 2021</h4>
-                <p>
-                  Premiers pas en Algorithme et Programmation C (découverte de
-                  la programmation)
-                </p>
-              </div>
-            </div>
+        <div className="about-method-media">
+          <h2 className="section-title">
+            Ma <span>Méthode</span>
+          </h2>
+          <div className="about-method-card" role="img" aria-label="Schéma de méthode de travail">
+            <Image
+              src="/img/methode-sombre.png"
+              alt=""
+              width={1600}
+              height={900}
+              className="about-method-img about-method-img--dark"
+              priority={false}
+            />
+            <Image
+              src="/img/methode-claire.png"
+              alt=""
+              width={1600}
+              height={900}
+              className="about-method-img about-method-img--light"
+              priority={false}
+            />
           </div>
         </div>
       </div>

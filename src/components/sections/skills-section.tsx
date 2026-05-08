@@ -27,6 +27,11 @@ export async function SkillsSection() {
                     <div
                       className="progress-bar"
                       data-width={skill.percentage}
+                      role="progressbar"
+                      aria-label={skill.name}
+                      aria-valuemin={0}
+                      aria-valuemax={100}
+                      aria-valuenow={skill.percentage}
                     />
                   </div>
                 ))}
@@ -52,6 +57,8 @@ export async function SkillsSection() {
                     <div
                       className="circle-progress"
                       data-value={skill.percentage}
+                      role="img"
+                      aria-label={`${skill.name}: ${skill.percentage}%`}
                     >
                       <svg className="circle-chart" viewBox="0 0 100 100">
                         <circle className="circle-bg" cx="50" cy="50" r="40" />

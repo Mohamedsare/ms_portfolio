@@ -6,12 +6,10 @@ import { useEffect, useState } from "react";
 
 const links = [
   { href: "/#accueil", label: "Accueil", key: "home" },
-  { href: "/#apropos", label: "À propos", key: "about" },
+  { href: "/#services", label: "Services", key: "services" },
   { href: "/#projets", label: "Projets", key: "projects" },
   { href: "/#competences", label: "Compétences", key: "skills" },
-  { href: "/#services", label: "Services", key: "services" },
   { href: "/#tarifs", label: "Tarifs", key: "tarifs" },
-  { href: "/#contact", label: "Contact", key: "contact" },
 ];
 
 function isNavActive(
@@ -23,12 +21,10 @@ function isNavActive(
   const h = hash || "#accueil";
   const targets: Record<string, string> = {
     home: "#accueil",
-    about: "#apropos",
     projects: "#projets",
     skills: "#competences",
     services: "#services",
     tarifs: "#tarifs",
-    contact: "#contact",
   };
   return targets[key] === h;
 }
@@ -61,7 +57,16 @@ export function Navbar() {
           </Link>
           <div className="theme-switch-wrapper desktop-position logo-theme-switch">
             <label className="theme-switch-label moon-icon">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <svg
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
                 <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
               </svg>
             </label>
@@ -70,7 +75,16 @@ export function Navbar() {
               <span className="slider" />
             </label>
             <label className="theme-switch-label sun-icon">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <svg
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
                 <circle cx="12" cy="12" r="5" />
                 <line x1="12" y1="1" x2="12" y2="3" />
                 <line x1="12" y1="21" x2="12" y2="23" />
@@ -87,7 +101,16 @@ export function Navbar() {
 
         <div className="theme-switch-wrapper mobile-position">
           <label className="theme-switch-label moon-icon">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <svg
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
               <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
             </svg>
           </label>
@@ -96,7 +119,16 @@ export function Navbar() {
             <span className="slider" />
           </label>
           <label className="theme-switch-label sun-icon">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <svg
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
               <circle cx="12" cy="12" r="5" />
               <line x1="12" y1="1" x2="12" y2="3" />
               <line x1="12" y1="21" x2="12" y2="23" />
@@ -111,19 +143,24 @@ export function Navbar() {
         </div>
 
         <ul className="navbar-menu">
+          <li className="navbar-drawer-header" aria-hidden="true">
+            <button type="button" className="navbar-close" aria-label="Fermer le menu">
+              <span aria-hidden>×</span>
+            </button>
+          </li>
           {links.map(({ href, label, key }) => (
             <li key={href} className="navbar-item">
               <a
                 href={href}
                 className={`navbar-links${isNavActive(key, pathname, hash) ? " active" : ""}`}
               >
-                {label}
+                <span>{label}</span>
               </a>
             </li>
           ))}
-          <li className="navbar-item">
+          <li className="navbar-item navbar-menu-footer">
             <a href="/cv/download/" className="navbar-links cv-download-btn" download>
-              <i className="fas fa-download" /> CV
+              <span>Mon CV</span>
             </a>
           </li>
         </ul>

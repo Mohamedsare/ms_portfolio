@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { fetchProjects } from "@/lib/queries";
 import {
   PROJECT_CATEGORIES,
@@ -48,19 +49,19 @@ export async function ProjectsSection() {
                   className={`project-card ${project.category}`}
                   data-category={project.category}
                 >
-                  {project.image_url ? (
-                    <img
-                      src={project.image_url}
+                  <div className="project-media">
+                    <Image
+                      src={
+                        project.image_url
+                          ? project.image_url
+                          : `https://via.placeholder.com/800x600/6c63ff/ffffff?text=${encodeURIComponent(project.title.slice(0, 20))}`
+                      }
                       alt={project.title}
+                      fill
+                      sizes="(max-width: 640px) 100vw, (max-width: 1200px) 50vw, 33vw"
                       className="project-img"
                     />
-                  ) : (
-                    <img
-                      src={`https://via.placeholder.com/400x300/6c63ff/ffffff?text=${encodeURIComponent(project.title.slice(0, 20))}`}
-                      alt={project.title}
-                      className="project-img"
-                    />
-                  )}
+                  </div>
                   <div className="project-overlay">
                     <div className={`project-status ${project.status}`}>
                       <span className="status-badge">{statusLabel}</span>

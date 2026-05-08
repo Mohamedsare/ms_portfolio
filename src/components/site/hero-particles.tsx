@@ -2,6 +2,26 @@
 
 import { useEffect, useRef } from "react";
 
+type Particle = {
+  x: number;
+  y: number;
+  size: number;
+  speedX: number;
+  speedY: number;
+  color: string;
+};
+
+function createParticle(width: number, height: number): Particle {
+  return {
+    x: Math.random() * width,
+    y: Math.random() * height,
+    size: Math.random() * 3 + 1,
+    speedX: Math.random() * 3 - 1.5,
+    speedY: Math.random() * 3 - 1.5,
+    color: `rgba(108, 99, 255, ${Math.random() * 0.6 + 0.1})`,
+  };
+}
+
 /**
  * Réseau de particules du hero (équivalent ancien bloc dans main.js).
  * En React, l’init doit être dans useEffect : main.js s’exécutait trop tôt pour Next.js.
@@ -27,57 +47,33 @@ export function HeroParticles() {
     resize();
     window.addEventListener("resize", resize);
 
-    class Particle {
-      x: number;
-      y: number;
-      size: number;
-      speedX: number;
-      speedY: number;
-      color: string;
-
-      constructor() {
-        this.x = Math.random() * cvs.width;
-        this.y = Math.random() * cvs.height;
-        this.size = Math.random() * 3 + 1;
-        this.speedX = Math.random() * 3 - 1.5;
-        this.speedY = Math.random() * 3 - 1.5;
-        this.color = `rgba(108, 99, 255, ${Math.random() * 0.6 + 0.1})`;
-      }
-
-      update() {
-        this.x += this.speedX;
-        this.y += this.speedY;
-        if (this.x < 0 || this.x > cvs.width) this.speedX *= -1;
-        if (this.y < 0 || this.y > cvs.height) this.speedY *= -1;
-      }
-
-      draw() {
-        ctx.fillStyle = this.color;
-        ctx.beginPath();
-        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-        ctx.fill();
-      }
-    }
-
     const particles: Particle[] = [];
     for (let i = 0; i < 100; i++) {
-      particles.push(new Particle());
+      particles.push(createParticle(cvs.width, cvs.height));
     }
 
     function animateParticles() {
       ctx.clearRect(0, 0, cvs.width, cvs.height);
       for (let i = 0; i < particles.length; i++) {
-        particles[i].update();
-        particles[i].draw();
+        const p = particles[i];
+        p.x += p.speedX;
+        p.y += p.speedY;
+        if (p.x < 0 || p.x > cvs.width) p.speedX *= -1;
+        if (p.y < 0 || p.y > cvs.height) p.speedY *= -1;
+
+        ctx.fillStyle = p.color;
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+        ctx.fill();
         for (let j = i + 1; j < particles.length; j++) {
-          const dx = particles[i].x - particles[j].x;
-          const dy = particles[i].y - particles[j].y;
+          const dx = p.x - particles[j].x;
+          const dy = p.y - particles[j].y;
           const distance = Math.sqrt(dx * dx + dy * dy);
           if (distance < 100) {
             ctx.strokeStyle = `rgba(108, 99, 255, ${1 - distance / 100})`;
             ctx.lineWidth = 0.5;
             ctx.beginPath();
-            ctx.moveTo(particles[i].x, particles[i].y);
+            ctx.moveTo(p.x, p.y);
             ctx.lineTo(particles[j].x, particles[j].y);
             ctx.stroke();
           }

@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 type PricingPlan = {
   id: string;
   title: string;
@@ -99,22 +101,6 @@ const PLANS: PricingPlan[] = [
     ],
   },
   {
-    id: "excel",
-    title: "Formation Excel",
-    priceEur: 115,
-    priceXaf: 75_440,
-    popular: true,
-    ctaPrimary: true,
-    features: [
-      "Formation sur mesure sur 4 semaines",
-      "3 séances de 3 h par semaine",
-      "Supports de cours complets",
-      "Exercices pratiques",
-      "Suivi personnalisé",
-      "Support post-formation 1 mois",
-    ],
-  },
-  {
     id: "formation-dev",
     title: "Formation développement",
     priceEur: 250,
@@ -131,24 +117,6 @@ const PLANS: PricingPlan[] = [
       "Suivi personnalisé",
       "Projet final encadré",
       "Support post-formation 2 mois",
-    ],
-  },
-  {
-    id: "pack-complet",
-    title: "Pack complet",
-    priceEur: 1835,
-    priceXaf: 1_203_760,
-    features: [
-      "Site web + application mobile",
-      "Solution IA intégrée",
-      "Formation Excel incluse",
-      "Nom de domaine & hébergement (2 ans)",
-      "Publication App Store & Play Store",
-      "Base complète (SQL ou cloud)",
-      "Synchronisation multi-appareils",
-      "SEO avancé",
-      "Support technique 12 mois",
-      "Formation complète 6 h",
     ],
   },
 ];
@@ -196,24 +164,24 @@ export function PricingSection() {
                   </li>
                 ))}
               </ul>
-              <a
+              <Link
                 href="/#contact"
                 className={
                   plan.ctaPrimary ? "pricing-btn pricing-btn-primary" : "pricing-btn pricing-btn-outline"
                 }
               >
                 Commander
-              </a>
+              </Link>
             </article>
           ))}
         </div>
 
         <div className="pricing-footer-cta">
           <p className="pricing-footer-text">Besoin d&apos;une solution sur mesure ?</p>
-          <a href="/#contact" className="pricing-btn pricing-btn-ghost">
+          <Link href="/#contact" className="pricing-btn pricing-btn-ghost">
             <i className="fas fa-comments" aria-hidden />
             Demander un devis personnalisé
-          </a>
+          </Link>
         </div>
       </div>
     </section>

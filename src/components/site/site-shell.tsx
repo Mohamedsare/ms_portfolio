@@ -24,7 +24,7 @@ export function SiteShell({ children }: { children: React.ReactNode }) {
       <div className="cursor-follower" />
       <Navbar />
       <HashScroll />
-      <main>
+      <main id="contenu">
         <PageMotion>{children}</PageMotion>
       </main>
       <Footer />

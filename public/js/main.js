@@ -151,7 +151,8 @@ const navbar = document.querySelector('.navbar');
 const navbarToggle = document.querySelector('.navbar-toggle');
 const navbarMenu = document.querySelector('.navbar-menu');
 
-if (navbarToggle && navbarMenu) {
+// Si le menu burger est piloté par React, on évite le double binding.
+if (navbarToggle && navbarMenu && !navbarToggle.dataset.reactNav) {
     navbarToggle.addEventListener('click', () => {
         navbarToggle.classList.toggle('active');
         navbarMenu.classList.toggle('active');
@@ -163,6 +164,14 @@ if (navbarToggle && navbarMenu) {
             navbarMenu.classList.remove('active');
         });
     });
+
+    const closeBtn = navbarMenu.querySelector('.navbar-close');
+    if (closeBtn) {
+        closeBtn.addEventListener('click', () => {
+            navbarToggle.classList.remove('active');
+            navbarMenu.classList.remove('active');
+        });
+    }
 }
 
 // Changement de style de la navbar au scroll
@@ -194,7 +203,6 @@ const scrollAnimations = {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
                     const element = entry.target;
-                    const animationType = element.dataset.animation || 'fade-up';
                     const delay = parseInt(element.dataset.delay) || 0;
                     
                     setTimeout(() => {

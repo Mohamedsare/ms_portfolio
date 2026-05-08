@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { AboutSection } from "@/components/sections/about-section";
 import { ContactSection } from "@/components/sections/contact-section";
 import { ProjectsSection } from "@/components/sections/projects-section";
@@ -27,10 +28,10 @@ export default async function HomePage() {
             Développeur Full-Stack. <br />
             (Mohamed SARE)
           </p>
-          <a href="/#projets" className="main-btn">
+          <Link href="/#projets" className="main-btn">
             <i className="fas fa-rocket" />
             <span>Voir mes projets</span>
-          </a>
+          </Link>
         </div>
         <div className="scroll-down">
           <span />
@@ -78,19 +79,19 @@ export default async function HomePage() {
             {latestArticles.length > 0 ? (
               latestArticles.map((article) => (
                 <article key={article.id} className="blog-card">
-                  {article.image_url ? (
-                    <img
-                      src={article.image_url}
+                  <div className="blog-media">
+                    <Image
+                      src={
+                        article.image_url
+                          ? article.image_url
+                          : `https://via.placeholder.com/800x440/6c63ff/ffffff?text=${encodeURIComponent(article.title.slice(0, 20))}`
+                      }
                       alt={article.title}
+                      fill
+                      sizes="(max-width: 640px) 100vw, (max-width: 1200px) 50vw, 33vw"
                       className="blog-img"
                     />
-                  ) : (
-                    <img
-                      src={`https://via.placeholder.com/400x220/6c63ff/ffffff?text=${encodeURIComponent(article.title.slice(0, 20))}`}
-                      alt={article.title}
-                      className="blog-img"
-                    />
-                  )}
+                  </div>
                   <div className="blog-content">
                     <h3 className="blog-title">{article.title}</h3>
                     <p className="blog-date">

@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { notFound } from "next/navigation";
 import {
   fetchProjectBySlug,
@@ -59,10 +60,13 @@ export default async function ProjectDetailPage({ params }: Props) {
             <h1 className="project-title">{project.title}</h1>
             {project.image_url && (
               <div className="project-image">
-                <img
+                <Image
                   src={project.image_url}
                   alt={project.title}
+                  width={1600}
+                  height={900}
                   className="w-full h-auto"
+                  sizes="(max-width: 768px) 100vw, 900px"
                 />
               </div>
             )}
@@ -159,19 +163,19 @@ export default async function ProjectDetailPage({ params }: Props) {
                 const spCat = projectCategoryLabel(sp.category);
                 return (
                   <article key={sp.id} className="similar-project-card">
-                    {sp.image_url ? (
-                      <img
-                        src={sp.image_url}
+                    <div className="similar-project-media">
+                      <Image
+                        src={
+                          sp.image_url
+                            ? sp.image_url
+                            : `https://via.placeholder.com/600x400/6c63ff/ffffff?text=${encodeURIComponent(sp.title.slice(0, 20))}`
+                        }
                         alt={sp.title}
+                        fill
+                        sizes="(max-width: 768px) 100vw, 33vw"
                         className="similar-project-img"
                       />
-                    ) : (
-                      <img
-                        src={`https://via.placeholder.com/300x200/6c63ff/ffffff?text=${encodeURIComponent(sp.title.slice(0, 20))}`}
-                        alt={sp.title}
-                        className="similar-project-img"
-                      />
-                    )}
+                    </div>
                     <div className="similar-project-content">
                       <h4 className="similar-project-title">{sp.title}</h4>
                       <p className="similar-project-category">{spCat}</p>
